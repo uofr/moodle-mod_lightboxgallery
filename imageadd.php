@@ -26,6 +26,7 @@
 
 require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once(dirname(__FILE__).'/imageadd_form.php');
+require_once(dirname(__FILE__).'/imageclass.php');
 
 $id = required_param('id', PARAM_INT);
 
@@ -54,7 +55,7 @@ if ($mform->is_cancelled()) {
     $filename = $mform->get_new_filename('image');
 
     $fileinfo = array(
-        'contextid'     => $cm->id,
+        'contextid'     => $context->id,
         'component'     => 'mod_lightboxgallery',
         'filearea'      => 'gallery_images',
         'itemid'        => 0,

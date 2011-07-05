@@ -27,6 +27,7 @@
 require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once(dirname(__FILE__).'/locallib.php');
 require_once(dirname(__FILE__).'/edit/base.class.php');
+require_once(dirname(__FILE__).'/imageclass.php');
 
 global $DB;
 
@@ -44,6 +45,7 @@ require_login($course->id);
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
 require_capability('mod/lightboxgallery:edit', $context);
 
+$PAGE->set_cm($cm);
 $PAGE->set_url('/mod/lightboxgallery/imageedit.php', array('id' => $cm->id, 'image' => $image, 'tab' => $tab, 'page' => $page));
 $PAGE->set_title($gallery->name);
 $PAGE->set_heading($course->shortname);
@@ -66,14 +68,14 @@ $editclass = 'edit_'.$tab;
 $editinstance = new $editclass($gallery, $cm, $image, $tab);
 
 $fs = get_file_storage();
-if (!$stored_file = $fs->get_file($cm->id, 'mod_lightboxgallery', 'gallery_images', '0', '/', $image)) {
-    print_error(get_string('errornofile', 'lightboxgallery', $image), $galleryurl);
+if (!$stored_file = $fs->get_file($context->id, 'mod_lightboxgallery', 'gallery_images', '0', '/', $image)) {
+    print_error(get_string('errornofile', 'lightboxgallery', $image));
 }
 
 if ($editinstance->processing() && confirm_sesskey()) {
     add_to_log($course->id, 'lightboxgallery', 'editimage', 'view.php?id='.$cm->id, $tab.' '.$image, $cm->id, $USER->id);
     $editinstance->process_form();
-    redirect($CFG->wwwroot.'/mod/lightboxgallery/imageedit.php?id='.$cm->id.'&image='.$image.'&tab='.$tab);
+    redirect($CFG->wwwroot.'/mod/lightboxgallery/imageedit.php?id='.$cm->id.'&image='.$editinstance->image.'&tab='.$tab);
 }
 
 $image = new lightboxgallery_image($stored_file, $gallery, $cm);

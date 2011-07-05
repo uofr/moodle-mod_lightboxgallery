@@ -9,7 +9,7 @@ class edit_thumbnail extends edit_base {
     function output() {
 
         $fs = get_file_storage();
-        $stored_file = $fs->get_file($this->cm->id, 'mod_lightboxgallery', 'gallery_images', '0', '/', $this->image);
+        $stored_file = $fs->get_file($this->context->id, 'mod_lightboxgallery', 'gallery_images', '0', '/', $this->image);
         $image = new lightboxgallery_image($stored_file, $this->gallery, $this->cm);
 
         $result = '<input type="submit" name="index" value="' . get_string('setasindex', 'lightboxgallery')  . '" /><br /><br />' .
@@ -25,13 +25,13 @@ class edit_thumbnail extends edit_base {
         $result .= '<br /><br />' . get_string('thumbnailoffset', 'lightboxgallery') . ': <input type="text" name="offset" value="20" size="4" /><br /><br />'.
                    '<input type="submit" value="' . get_string('move') . '" />&nbsp;<input type="submit" name="reset" value="' . get_string('reset') . '" />';
 
-        return $this->enclose_in_form($result);        
+        return $this->enclose_in_form($result);
     }
 
     function process_form() {
 
         $fs = get_file_storage();
-        $stored_file = $fs->get_file($this->cm->id, 'mod_lightboxgallery', 'gallery_images', '0', '/', $this->image);
+        $stored_file = $fs->get_file($this->context->id, 'mod_lightboxgallery', 'gallery_images', '0', '/', $this->image);
         $image = new lightboxgallery_image($stored_file, $this->gallery, $this->cm);
 
         if (optional_param('index', '', PARAM_TEXT)) {
@@ -47,10 +47,10 @@ class edit_thumbnail extends edit_base {
                 case 2: $offsetx = 0; $offsety = $offset; break;
                 case 3: $offsetx = -$offset; $offsety = 0; break;
                 case 4: $offsetx = $offset; $offsety = 0; break;
-            }  
+            }
         }
 
-        $this->imageobj->create_thumbnail($offsetx, $offsety);
+        $image->create_thumbnail($offsetx, $offsety);
     }
 
 }

@@ -10,7 +10,7 @@ class edit_tag extends edit_base {
         global $CFG;
 
         $fs = get_file_storage();
-        $stored_file = $fs->get_file($this->cm->id, 'mod_lightboxgallery', 'gallery_images', '0', '/', $this->image);
+        $stored_file = $fs->get_file($this->context->id, 'mod_lightboxgallery', 'gallery_images', '0', '/', $this->image);
         $image = new lightboxgallery_image($stored_file, $this->gallery, $this->cm);
 
         $manualform = '<input type="text" name="tag" /><input type="submit" value="'.get_string('add').'" />';
@@ -28,14 +28,14 @@ class edit_tag extends edit_base {
             $deleteform = '<span class="tag-head"> ' . get_string('tagscurrent', 'lightboxgallery') . '</span>' . $this->enclose_in_form($deleteform);
         }
 
-        return $manualform . $deleteform;         
+        return $manualform . $deleteform;
     }
 
     function process_form() {
         $tag = optional_param('tag', '', PARAM_TAG);
 
         $fs = get_file_storage();
-        $stored_file = $fs->get_file($this->cm->id, 'mod_lightboxgallery', 'gallery_images', '0', '/', $this->image);
+        $stored_file = $fs->get_file($this->context->id, 'mod_lightboxgallery', 'gallery_images', '0', '/', $this->image);
         $image = new lightboxgallery_image($stored_file, $this->gallery, $this->cm);
 
         if ($tag) {

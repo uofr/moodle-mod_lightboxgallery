@@ -4,13 +4,21 @@ require_once($CFG->libdir.'/gdlib.php');
 
 class edit_crop extends edit_base {
 
-    function edit_crop($gallery, $image, $tab) {
-        parent::edit_base($gallery, $image, $tab, true, false);      
+    function edit_crop($gallery, $cm, $image, $tab) {
+        parent::edit_base($gallery, $cm, $image, $tab, true, false);
     }
 
     function output() {
+        global $PAGE;
+/*
+        $PAGE->requires->js(new moodle_url('/mod/lightboxgallery/js/prototype.js'),true);
+        $PAGE->requires->js(new moodle_url('/mod/lightboxgallery/js/scriptaculous.js'),true);
+        $PAGE->requires->js(new moodle_url('/mod/lightboxgallery/js/effects.js'),true);
+        $PAGE->requires->js(new moodle_url('/mod/lightboxgallery/js/builder.js'),true);
+        $PAGE->requires->js(new moodle_url('/mod/lightboxgallery/js/dragdrop.js'),true);
+        $PAGE->requires->js(new moodle_url('/mod/lightboxgallery/js/cropper.js'),true);
+*/
 
-        require_js(array('scripts/prototype.js', 'scripts/scriptaculous.js', 'scripts/effects.js', 'scripts/builder.js', 'scripts/dragdrop.js', 'scripts/cropper.js'));
 
         $result = '<script type="text/javascript" charset="utf-8">
                         function onEndCrop( coords, dimensions ) {
@@ -20,16 +28,16 @@ class edit_crop extends edit_base {
                             $( \'y2\' ).value = coords.y2;
                             $( \'cropInfo\' ).innerHTML = \''.get_string('from').': \' + coords.x1 + \'x\' + coords.y1 + \', '.get_string('size').': \' + dimensions.width + \'x\' + dimensions.height;
                         }
-                        Event.observe( 
-                            window, 
-                            \'load\', 
-                            function() { 
-                                new Cropper.Img( 
+                        Event.observe(
+                            window,
+                            \'load\',
+                            function() {
+                                new Cropper.Img(
                                     \'cropImage\',
                                     {
-                                        onEndCrop: onEndCrop 
+                                        onEndCrop: onEndCrop
                                     }
-                                ) 
+                                )
                             }
                         );
                     </script>';
@@ -39,7 +47,7 @@ class edit_crop extends edit_base {
                     <input type="hidden" name="y2" id="y2" value="0" />
                     <table>
                       <tr>
-                        <td>'.lightboxgallery_make_img_tag(lightboxgallery_get_image_url($this->gallery->id, $this->image), 'cropImage').'</td>
+                        <td>'.'TODO:imgurl'.'</td>
                       </tr>
                       <tr>
                         <td><span id="cropInfo">&nbsp;</span></td>
@@ -48,8 +56,8 @@ class edit_crop extends edit_base {
                         <td><input type="submit" value="'.get_string('savechanges').'" /></td>
                       </tr>
                     </table>';
-
-        return $this->enclose_in_form($result);        
+//lightboxgallery_make_img_tag(lightboxgallery_get_image_url($this->gallery->id, $this->image), 'cropImage')
+        return $this->enclose_in_form($result);
     }
 
     function process_form() {

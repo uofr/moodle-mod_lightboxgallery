@@ -6,16 +6,16 @@ class edit_resize extends edit_base {
     var $strscale;
     var $resizeoptions;
 
-    function __construct($gallery, $image, $cm, $tab) {
-        parent::edit_base($gallery, $image, $cm, $tab, true);
+    function __construct($gallery, $cm, $image, $tab) {
+        parent::edit_base($gallery, $cm, $image, $tab, true);
         $this->strresize = get_string('edit_resize', 'lightboxgallery');
         $this->strscale = get_string('edit_resizescale', 'lightboxgallery');
-        $this->resizeoptions = lightboxgallery_resize_options();    
+        $this->resizeoptions = lightboxgallery_resize_options();
     }
 
     function output() {
         $fs = get_file_storage();
-        $stored_file = $fs->get_file($this->cm->id, 'mod_lightboxgallery', 'gallery_images', '0', '/', $this->image);
+        $stored_file = $fs->get_file($this->context->id, 'mod_lightboxgallery', 'gallery_images', '0', '/', $this->image);
         $image = new lightboxgallery_image($stored_file, $this->gallery, $this->cm);
 
         $currentsize = sprintf('%s: %dx%d', get_string('currentsize', 'lightboxgallery'), $image->width, $image->height).'<br /><br />';
@@ -42,7 +42,7 @@ class edit_resize extends edit_base {
         $button = required_param('button', PARAM_TEXT);
 
         $fs = get_file_storage();
-        $stored_file = $fs->get_file($this->cm->id, 'mod_lightboxgallery', 'gallery_images', '0', '/', $this->image);
+        $stored_file = $fs->get_file($this->context->id, 'mod_lightboxgallery', 'gallery_images', '0', '/', $this->image);
         $image = new lightboxgallery_image($stored_file, $this->gallery, $this->cm);
 
         switch ($button) {
@@ -57,7 +57,7 @@ class edit_resize extends edit_base {
             break;
         }
 
-        $image->resize_image($width, $height);
+        $this->image = $image->resize_image($width, $height);
     }
 
 }

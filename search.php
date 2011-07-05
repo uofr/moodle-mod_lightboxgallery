@@ -40,7 +40,6 @@ $gallery = $DB->get_record('lightboxgallery', array('id' => $cm->instance), '*',
 require_login($course, true, $cm);
 
 if ($gallery->ispublic) {
-    course_setup($course->id);
     $userid = (isloggedin() ? $USER->id : 0);
 } else {
     require_login($course, true, $cm);

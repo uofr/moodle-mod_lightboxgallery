@@ -50,13 +50,13 @@ function xmldb_lightboxgallery_upgrade($oldversion=0) {
         $table = new xmdbl_table('lightboxgallery');
 
         // Add perpage field
-        $field = new xmldb_field('perpage', XMLDB_TYPE_INTEGER, '3', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'description');
+        $field = new xmldb_field('perpage', XMLDB_TYPE_INTEGER, '3', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'description');
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
 
         // Add comments field
-        $field = new xmldb_field('comments', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'perpage');
+        $field = new xmldb_field('comments', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'perpage');
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
@@ -65,19 +65,19 @@ function xmldb_lightboxgallery_upgrade($oldversion=0) {
         $table = new xmldb_table('lightboxgallery_comments');
 
         if (!$dbman->table_exists($table)) {
-            $field = new xmldb_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+            $field = new xmldb_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
             $table->addField($field);
 
-            $field = new xmldb_field('gallery', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+            $field = new xmldb_field('gallery', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
             $table->addField($field);
  
-            $field = new xmldb_field('user', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+            $field = new xmldb_field('user', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
             $table->addField($field);
 
-            $field = new xmldb_field('comment', XMLDB_TYPE_TEXT, 'small', null, XMLDB_NOTNULL, null, null, null, null);
+            $field = new xmldb_field('comment', XMLDB_TYPE_TEXT, 'small', null, XMLDB_NOTNULL, null, null);
             $table->addField($field);
 
-            $field = new xmldb_field('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+            $field = new xmldb_field('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
             $table->addField($field);
 
             $key = new xmldb_key('primary', XMLDB_KEY_PRIMARY, array('id'));
@@ -110,7 +110,7 @@ function xmldb_lightboxgallery_upgrade($oldversion=0) {
         $table = new xmldb_table('lightboxgallery');
 
         // Insert extinfo field into lightboxgallery
-        $field = new xmldb_field('extinfo', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'comments');
+        $field = new xmldb_field('extinfo', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'comments');
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
@@ -119,16 +119,16 @@ function xmldb_lightboxgallery_upgrade($oldversion=0) {
         $table = new xmldb_table('lightboxgallery_captions');
 
         if (!$dbman->table_exists($table)) {
-            $field = new xmldb_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+            $field = new xmldb_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
             $table->addField($field);
 
-            $field = new xmldb_field('gallery', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+            $field = new xmldb_field('gallery', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
             $table->addField($field);
 
-            $field = new xmldb_field('image', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, null);
+            $field = new xmldb_field('image', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
             $table->addField($field);
 
-            $field = new xmldb_field('caption', XMLDB_TYPE_TEXT, 'small', null, XMLDB_NOTNULL, null, null, null, null);
+            $field = new xmldb_field('caption', XMLDB_TYPE_TEXT, 'small', null, XMLDB_NOTNULL, null, null);
             $table->addField($field);
 
             $key = new xmldb_key('primary', XMLDB_KEY_PRIMARY, array('id'));
@@ -148,7 +148,7 @@ function xmldb_lightboxgallery_upgrade($oldversion=0) {
         $newfields = array('public', 'rss', 'autoresize', 'resize');
         $previousfield = 'comments';
         foreach ($newfields as $newfield) {
-            $field = new xmldb_field($newfield, XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', $previousfield);
+            $field = new xmldb_field($newfield, XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', $previousfield);
             if (!$dbman->field_exists($table, $field)) {
                 $dbman->add_field($table, $field);
                 $previousfield = $newfield;
@@ -158,7 +158,7 @@ function xmldb_lightboxgallery_upgrade($oldversion=0) {
         $table = new xmldb_table('lightboxgallery_comments');
 
         // Rename user field to userid in lightboxgallery_comments (for postgres)
-        $field = new xmldb_field('user', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+        $field = new xmldb_field('user', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
         if ($dbman->field_exists($table, $field)) {
             $dbman->rename_field($table, $field, 'userid');
         }
@@ -166,12 +166,12 @@ function xmldb_lightboxgallery_upgrade($oldversion=0) {
         $table = new xmldb_table('lightboxgallery_captions');
 
         // Rename caption field to description and insert metatype field in lightboxgallery_captions
-        $field = new xmldb_field('caption', XMLDB_TYPE_TEXT, 'small', null, XMLDB_NOTNULL, null, null, null, null, 'image');
+        $field = new xmldb_field('caption', XMLDB_TYPE_TEXT, 'small', null, XMLDB_NOTNULL, null, null, 'image');
         if ($dbman->field_exists($table, $field)) {
             $dbman->rename_field($table, $field, 'description');
         }
 
-        $field = new xmldb_field('metatype', XMLDB_TYPE_CHAR, '20', null, XMLDB_NOTNULL, null, XMLDB_ENUM, array('caption', 'tag'), 'caption', 'image');
+        $field = new xmldb_field('metatype', XMLDB_TYPE_CHAR, '20', null, XMLDB_NOTNULL, array('caption', 'tag'), 'caption', 'image');
         if ($dbman->table_exists($table) && !$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
@@ -184,7 +184,7 @@ function xmldb_lightboxgallery_upgrade($oldversion=0) {
         $table = new xmldb_table('lightboxgallery');
 
         // Rename public field to ispublic in lightboxgallery (for mssql)
-        $field = new xmldb_field('public', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'comments');
+        $field = new xmldb_field('public', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'comments');
         if ($dbman->field_exists($table, $field)) {
             $dbman->rename_field($table, $field, 'ispublic');
         }
@@ -198,6 +198,34 @@ function xmldb_lightboxgallery_upgrade($oldversion=0) {
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
+
+        //file migration, add entries in file table that points at the legacy files
+        //get list of files based on path
+        if ($galleries = $DB->get_records('lightboxgallery')) {
+            foreach ($galleries as $gallery) {
+                $cm = get_coursemodule_from_instance('lightboxgallery', $gallery->id, $gallery->course, false, MUST_EXIST);
+                $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+                $coursecontext = get_context_instance(CONTEXT_COURSE, $gallery->course);
+
+                //add files to lightbox area, iterate over the legacy files
+                $fs = get_file_storage();
+                if ($stored_files = $fs->get_area_files($coursecontext->id, 'course','legacy')) {
+                    foreach ($stored_files as $file) {
+                        echo $file->get_filename()."\n";
+                        if (substr($file->get_mimetype(),0,6) != 'image/' ||
+                            substr($file->get_filepath(), -8, 8) == '/_thumb/') {
+                            continue;
+                        }
+                        //insert as lightbox file
+                        $settings->contextid = $context->id;
+                        $settings->component = 'mod_lightboxgallery';
+                        $settings->filearea = 'gallery_images';
+                        $fs->create_file_from_storedfile($settings, $file);
+                    }
+                }
+            }
+        }
+
     }
 
     return true;

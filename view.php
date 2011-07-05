@@ -33,8 +33,8 @@ require_once(dirname(__FILE__).'/imageclass.php');
 
 global $DB;
 
-$id	 = required_param('id', PARAM_INT); // Course module id
-$page	 = optional_param('page', 0, PARAM_INT);
+$id = required_param('id', PARAM_INT); // Course module id
+$page = optional_param('page', 0, PARAM_INT);
 $search  = optional_param('search', '', PARAM_TEXT);
 $editing = optional_param('editing', 0, PARAM_BOOL);
 
@@ -45,7 +45,7 @@ $gallery = $DB->get_record('lightboxgallery', array('id' => $cm->instance), '*',
 require_login($course, true, $cm);
 
 if ($gallery->ispublic) {
-    course_setup($course->id);
+    //course_setup($course->id);
     $userid = (isloggedin() ? $USER->id : 0);
 } else {
     require_login($course, true, $cm);
@@ -62,6 +62,7 @@ lightboxgallery_config_defaults();
 
 add_to_log($course->id, 'lightboxgallery', 'view', 'view.php?id='.$cm->id.'&page='.$page, $gallery->id, $cm->id, $userid);
 
+$PAGE->set_cm($cm);
 $PAGE->set_url('/mod/lightboxgallery/view.php', array('id' => $cm->id));
 $PAGE->set_title($gallery->name);
 $PAGE->set_heading($course->shortname);
@@ -89,7 +90,7 @@ if ($gallery->description && !$editing) {
 echo $OUTPUT->box_start('generalbox lightbox-gallery clearfix');
 
 $fs = get_file_storage();
-$stored_files = $fs->get_area_files($cm->id,'mod_lightboxgallery','gallery_images');
+$stored_files = $fs->get_area_files($context->id,'mod_lightboxgallery','gallery_images');
 
 $image_count = 1;
 
@@ -125,7 +126,7 @@ $showtags = !in_array('tag', explode(',', get_config('lightboxgallery', 'disable
 
 if (!$editing && $showtags) {
     $sql = "SELECT description
-              FROM {$CFG->prefix}lightboxgallery_image_meta
+              FROM {lightboxgallery_image_meta}
              WHERE gallery = {$gallery->id}
                AND metatype = 'tag'
           GROUP BY description
