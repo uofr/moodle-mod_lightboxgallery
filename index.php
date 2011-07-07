@@ -75,7 +75,12 @@ foreach ($galleries as $gallery) {
     }
 
     $fs = get_file_storage();
-    $imagecount = count($fs->get_area_files($gallery->coursemodule,'mod_lightboxgallery','gallery_images'));
+    $files = $fs->get_area_files($cm->id,'mod_lightboxgallery','gallery_images');
+    foreach ($files as $file) {
+        if ($file->get_filename() != '.') {
+            $imagecount++;
+        }
+    }
     $commentcount = $DB->count_records('lightboxgallery_comments', array('gallery' => $gallery->id));
 
     $table->data[] = array(($printsection ? $gallery->section : ''),

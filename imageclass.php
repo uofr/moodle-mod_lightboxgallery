@@ -100,6 +100,34 @@ class lightboxgallery_image {
         return;
     }
 
+    public function create_index() {
+        global $CFG;
+
+        $fileinfo = array(
+            'contextid' => $this->context->id,
+            'component' => 'mod_lightboxgallery',
+            'filearea' => 'gallery_index',
+            'itemid' => 0,
+            'filepath' => '/',
+            'filename' => 'index.png');
+
+        $base = imagecreatefrompng($CFG->dirroot.'/mod/lightboxgallery/pix/index.png');
+        $transparent = imagecolorat($base, 0, 0);
+
+        $shrunk = imagerotate($this->get_image_resized(48, 48, 0, 0), 351, $transparent, 0);
+
+        imagecolortransparent($base, $transparent);
+
+        imagecopy($base, $shrunk, 2, 3, 0, 0, imagesx($shrunk), imagesy($shrunk));
+
+        ob_start();
+        imagepng($base);
+        $index = ob_get_clean();
+
+        $fs = get_file_storage();
+        return $fs->create_file_from_string($fileinfo, $index);
+    }
+
     private function delete_file() {
         $this->delete_thumbnail();
         $this->stored_file->delete();

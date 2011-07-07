@@ -134,3 +134,42 @@ function lightboxgallery_rss_enabled() {
 
     return ($CFG->enablerssfeeds && get_config('lightboxgallery', 'enablerssfeeds'));
 }
+
+function lightboxgallery_index_thumbnail($courseid, $gallery, $newimage = null) {
+    global $CFG;
+
+    require_once(dirname(__FILE__).'/imageclass.php');
+    $cm = get_coursemodule_from_instance("lightboxgallery", $gallery->id, $courseid);
+    $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+
+    $imageid = 'Gallery Index Image';
+
+    $fs = get_file_storage();
+    $stored_file = $fs->get_file($context->id, 'mod_lightboxgallery', 'gallery_index', '0', '/', 'index.png');
+
+    if (!is_null($newimage) && is_object($stored_file)) { //delete any existing index
+        $stored_file->delete();
+    }
+    if (is_object($stored_file) && is_null($newimage)) {
+        //grab the index
+        $index = $stored_file;
+    } else {
+        //get first image and create an index for that
+        if (is_null($newimage)) {
+            $files = $fs->get_area_files($context->id,'mod_lightboxgallery','gallery_images');
+            $file = array_shift($files);
+            while (substr($file->get_mimetype(),0,6) != 'image/') {
+                $file = array_shift($files);
+            }
+            $image = new lightboxgallery_image($file, $gallery, $cm);
+        } else {
+            $image = $newimage;
+        }
+        $index = $image->create_index();
+    }
+    $path = $CFG->wwwroot.'/pluginfile.php/'.$context->id.'/mod_lightboxgallery/gallery_index/'.
+                $index->get_itemid().$index->get_filepath().$index->get_filename();
+
+    return '<img src="' . $path . '" alt="" ' . (! empty($imageid) ? 'id="' . $imageid . '"' : '' )  . ' />';
+}
+

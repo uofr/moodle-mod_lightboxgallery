@@ -35,7 +35,7 @@ class edit_thumbnail extends edit_base {
         $image = new lightboxgallery_image($stored_file, $this->gallery, $this->cm);
 
         if (optional_param('index', '', PARAM_TEXT)) {
-            return lightboxgallery_index_thumbnail($this->gallery->course, $this->gallery, $this->image);
+            return lightboxgallery_index_thumbnail($this->gallery->course, $this->gallery, $image);
         } else if (optional_param('reset', '', PARAM_TEXT)) {
             $offsetx = 0;
             $offsety = 0;
