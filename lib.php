@@ -34,6 +34,22 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/filelib.php');
 
+function lightboxgallery_supports($feature) {
+    switch($feature) {
+        case FEATURE_MOD_ARCHETYPE:           return MOD_ARCHETYPE_RESOURCE;
+        case FEATURE_GROUPS:                  return false;
+        case FEATURE_GROUPINGS:               return false;
+        case FEATURE_GROUPMEMBERSONLY:        return true;
+        case FEATURE_MOD_INTRO:               return false;
+        case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
+        case FEATURE_GRADE_HAS_GRADE:         return false;
+        case FEATURE_GRADE_OUTCOMES:          return false;
+        case FEATURE_BACKUP_MOODLE2:          return true;
+
+        default: return null;
+    }
+}
+
 /**
  * Given an object containing all the necessary data,
  * (defined by the form in mod_form.php) this function
@@ -51,7 +67,7 @@ function lightboxgallery_add_instance($gallery) {
     if (!lightboxgallery_rss_enabled()) {
         $gallery->rss = 0;
     }
-   
+
     return $DB->insert_record('lightboxgallery', $gallery);
 }
 
