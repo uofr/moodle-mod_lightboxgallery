@@ -211,15 +211,20 @@ function xmldb_lightboxgallery_upgrade($oldversion=0) {
                 $fs = get_file_storage();
                 if ($stored_files = $fs->get_area_files($coursecontext->id, 'course','legacy')) {
                     foreach ($stored_files as $file) {
-                        echo $file->get_filename()."\n";
+                        $path = '/'.$gallery->folder;
+                        if ($gallery->folder != '') {
+                            $path .= '/';
+                        }
                         if (substr($file->get_mimetype(),0,6) != 'image/' ||
-                            substr($file->get_filepath(), -8, 8) == '/_thumb/') {
+                            substr($file->get_filepath(), -8, 8) == '/_thumb/' ||
+                            $file->get_filepath() != $path) {
                             continue;
                         }
                         //insert as lightbox file
                         $settings->contextid = $context->id;
                         $settings->component = 'mod_lightboxgallery';
                         $settings->filearea = 'gallery_images';
+                        $settings->filepath = '/';
                         $fs->create_file_from_storedfile($settings, $file);
                     }
                 }

@@ -85,7 +85,7 @@ class lightboxgallery_image {
             'component' => 'mod_lightboxgallery',
             'filearea' => 'gallery_thumbs',
             'itemid' => 0,
-            'filepath' => '/',
+            'filepath' => $this->stored_file->get_filepath(),
             'filename' => $this->stored_file->get_filename().'.png');
 
         ob_start();
@@ -150,7 +150,7 @@ class lightboxgallery_image {
             'component'     => 'mod_lightboxgallery',
             'filearea'      => 'gallery_images',
             'itemid'        => 0,
-            'filepath'      => '/',
+            'filepath'      => $this->stored_file->get_filepath(),
             'filename'      => $this->stored_file->get_filename());
 
         ob_start();
@@ -323,7 +323,7 @@ class lightboxgallery_image {
             'component'     => 'mod_lightboxgallery',
             'filearea'      => 'gallery_images',
             'itemid'        => 0,
-            'filepath'      => '/',
+            'filepath'      => $this->stored_file->get_filepath(),
             'filename'      => $this->stored_file->get_filename());
 
         ob_start();
@@ -345,7 +345,7 @@ class lightboxgallery_image {
             'component'     => 'mod_lightboxgallery',
             'filearea'      => 'gallery_images',
             'itemid'        => 0,
-            'filepath'      => '/',
+            'filepath'      => $this->stored_file->get_filepath(),
             'filename'      => $this->stored_file->get_filename());
 
         ob_start();
