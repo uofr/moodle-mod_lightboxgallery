@@ -20,7 +20,7 @@
  * Image editing page
  *
  * @package   mod_lightboxgallery
- * @copyright 2010 John Kelsh
+ * @copyright 2011 NetSpot Pty Ltd
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -46,6 +46,7 @@ $context = get_context_instance(CONTEXT_MODULE, $cm->id);
 require_capability('mod/lightboxgallery:edit', $context);
 
 $PAGE->set_cm($cm);
+$PAGE->set_pagelayout('incourse');
 $PAGE->set_url('/mod/lightboxgallery/imageedit.php', array('id' => $cm->id, 'image' => $image, 'tab' => $tab, 'page' => $page));
 $PAGE->set_title($gallery->name);
 $PAGE->set_heading($course->shortname);
