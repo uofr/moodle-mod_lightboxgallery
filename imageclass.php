@@ -54,7 +54,7 @@ class lightboxgallery_image {
 
         $this->image_url = $CFG->wwwroot.'/pluginfile.php/'.$this->context->id.'/mod_lightboxgallery/gallery_images/'.$this->stored_file->get_itemid().$this->stored_file->get_filepath().$this->stored_file->get_filename();
         $this->thumb_url = $CFG->wwwroot.'/pluginfile.php/'.$this->context->id.'/mod_lightboxgallery/gallery_thumbs/0/'.$this->stored_file->get_filepath().$this->stored_file->get_filename().'.png';
- 
+
         $image_info = $this->stored_file->get_imageinfo();
 
         $this->height = $image_info['height'];
@@ -70,7 +70,7 @@ class lightboxgallery_image {
 
         $imagemeta = new stdClass();
         $imagemeta->gallery = $this->cm->instance;
-        $imagemeta->image = $this->stored_file->get_pathnamehash();
+        $imagemeta->image = $this->stored_file->get_filename();
         $imagemeta->metatype = 'tag';
         $imagemeta->description = $tag;
 
@@ -190,7 +190,7 @@ class lightboxgallery_image {
         global $DB;
         $caption = '';
 
-        if($image_meta = $DB->get_record('lightboxgallery_image_meta', array('image' => $this->stored_file->get_pathnamehash(), 'metatype' => 'caption'))) {
+        if($image_meta = $DB->get_record('lightboxgallery_image_meta', array('image' => $this->stored_file->get_filename(), 'metatype' => 'caption'))) {
             $caption = $image_meta->description;
         }
 
@@ -284,7 +284,7 @@ class lightboxgallery_image {
             return $this->tags;
         }
 
-        $this->tags = $DB->get_records('lightboxgallery_image_meta', array('image' => $this->stored_file->get_pathnamehash(), 'metatype' => 'tag'));
+        $this->tags = $DB->get_records('lightboxgallery_image_meta', array('image' => $this->stored_file->get_filename(), 'metatype' => 'tag'));
 
         return $this->tags;
     }
@@ -365,11 +365,11 @@ class lightboxgallery_image {
 
         $imagemeta = new stdClass();
         $imagemeta->gallery = $this->cm->instance;
-        $imagemeta->image = $this->stored_file->get_pathnamehash();
+        $imagemeta->image = $this->stored_file->get_filename();
         $imagemeta->metatype = 'caption';
         $imagemeta->description = $caption;
 
-        if($meta = $DB->get_record('lightboxgallery_image_meta', array('gallery' => $this->cm->instance, 'image' => $this->stored_file->get_pathnamehash(), 'metatype' => 'caption'))) {
+        if($meta = $DB->get_record('lightboxgallery_image_meta', array('gallery' => $this->cm->instance, 'image' => $this->stored_file->get_filename(), 'metatype' => 'caption'))) {
             $imagemeta->id = $meta->id;
             return $DB->update_record('lightboxgallery_image_meta', $imagemeta);
         } else {

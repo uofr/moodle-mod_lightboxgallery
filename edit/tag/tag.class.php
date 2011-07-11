@@ -22,7 +22,7 @@ class edit_tag extends edit_base {
             $textlib = textlib_get_instance();
             $deleteform = '<input type="hidden" name="delete" value="1" />';
             foreach ($tags as $tag) {
-                $deleteform .= '<label><input type="checkbox" name="deletetags[]" value="'.$tag->id.'" /> '.htmlentities($textlib->typo3cs->utf8_decode($tag->description, 'iso-8859-1')).'</label><br />';
+                $deleteform .= '<label><input type="checkbox" name="deletetags[]" value="'.$tag->id.'" /> '.htmlentities(utf8_decode($tag->description)).'</label><br />';
             }
             $deleteform .= '<input type="submit" value="' . get_string('remove') . '" />';
             $deleteform = '<span class="tag-head"> ' . get_string('tagscurrent', 'lightboxgallery') . '</span>' . $this->enclose_in_form($deleteform);
