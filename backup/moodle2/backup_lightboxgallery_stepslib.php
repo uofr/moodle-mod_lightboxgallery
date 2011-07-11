@@ -61,7 +61,7 @@ class backup_lightboxgallery_activity_structure_step extends backup_activity_str
 
         // Define sources
         $lightboxgallery->set_source_table('lightboxgallery', array('id' => backup::VAR_ACTIVITYID));
-        $image_meta->set_source_table('lightboxgallery_image_metas', array('gallery' => backup::VAR_PARENTID));
+        $image_meta->set_source_table('lightboxgallery_image_meta', array('gallery' => backup::VAR_PARENTID));
 
         // All the rest of elements only happen if we are including user info
         if ($userinfo) {
