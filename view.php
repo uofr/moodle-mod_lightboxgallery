@@ -83,8 +83,8 @@ if ($allowrssfeed) {
 
 echo $OUTPUT->heading(get_string('displayinggallery', 'lightboxgallery', $gallery->name));
 
-if ($gallery->description && !$editing) {
-    echo $OUTPUT->box(format_text($gallery->description, '', array('para' => false)));
+if ($gallery->intro && !$editing) {
+    echo $OUTPUT->box(format_module_intro('lightboxgallery', $gallery, $cm->id), 'generalbox', 'intro');
 }
 
 echo $OUTPUT->box_start('generalbox lightbox-gallery clearfix');

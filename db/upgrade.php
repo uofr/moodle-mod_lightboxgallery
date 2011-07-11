@@ -70,7 +70,7 @@ function xmldb_lightboxgallery_upgrade($oldversion=0) {
 
             $field = new xmldb_field('gallery', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
             $table->addField($field);
- 
+
             $field = new xmldb_field('user', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
             $table->addField($field);
 
@@ -221,6 +221,7 @@ function xmldb_lightboxgallery_upgrade($oldversion=0) {
                             continue;
                         }
                         //insert as lightbox file
+                        $settings = new stdClass();
                         $settings->contextid = $context->id;
                         $settings->component = 'mod_lightboxgallery';
                         $settings->filearea = 'gallery_images';
@@ -230,7 +231,24 @@ function xmldb_lightboxgallery_upgrade($oldversion=0) {
                 }
             }
         }
+        upgrade_mod_savepoint(true, 2011040800, 'lightboxgallery');
+    }
 
+    if($oldversion < 2011071100) {
+        //switch out gallery description field for standard introeditor
+        $table = new xmldb_table('lightboxgallery');
+
+        $field = new xmldb_field('description', XMLDB_TYPE_TEXT, 'small', null, null, null, null, 'extinfo');
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->rename_field($table, $field, 'intro');
+        }
+
+        $field = new xmldb_field('introformat', XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'intro');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        upgrade_mod_savepoint(true, 2011071100, 'lightboxgallery');
     }
 
     return true;

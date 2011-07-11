@@ -65,7 +65,7 @@ if ($mform->is_cancelled()) {
     $newcomment = new object;
     $newcomment->gallery = $gallery->id;
     $newcomment->userid = $USER->id;
-    $newcomment->comment = $formadata->comment;
+    $newcomment->comment = $formadata->comment['text'];
     $newcomment->timemodified = time();
     if ($DB->insert_record('lightboxgallery_comments', $newcomment)) {
         add_to_log($course->id, 'lightboxgallery', 'comment', 'view.php?id='.$cm->id, $gallery->id, $cm->id, $USER->id);
@@ -77,7 +77,7 @@ if ($mform->is_cancelled()) {
 
 
 echo $OUTPUT->header();
-   
+
 $mform->display();
 
 echo $OUTPUT->footer();

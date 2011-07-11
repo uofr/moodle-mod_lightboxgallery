@@ -23,13 +23,13 @@
  * /admin/index.php
  *
  * @package   mod_lightboxgallery
- * @copyright 2011 John Kelsh
+ * @copyright 2011 NetSpot Pty Ltd
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$module->version  = 2011040800;  // The current module version (Date: YYYYMMDDXX)
+$module->version  = 2011071100;  // The current module version (Date: YYYYMMDDXX)
 $module->requires = 2010122500;  // Requires this Moodle version
 $module->cron     = 0;           // Period for cron to check this module (secs)
 
