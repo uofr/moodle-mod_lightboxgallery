@@ -49,9 +49,7 @@ class mod_lightboxgallery_mod_form extends moodleform_mod {
         $mform->addRule('name', null, 'required', null, 'client');
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
 
-        $options = array('subdirs'=>1, 'maxbytes'=>$CFG->maxbytes, 'maxfiles'=>-1, 'changeformat'=>1, 'context'=>$this->context, 'noclean'=>1, 'trusttext'=>0);
-        $mform->addElement('htmleditor', 'description', get_string('description'), $options);
-        $mform->setType('content', PARAM_RAW);
+        $this->add_intro_editor(true, get_string('description'));
 
         // Advanced options
 
