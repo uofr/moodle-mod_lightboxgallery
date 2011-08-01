@@ -106,7 +106,7 @@ foreach ($stored_files as $stored_file) {
 
     $image = new lightboxgallery_image($stored_file, $gallery, $cm);
 
-    echo $image->get_image_display_html();
+    echo $image->get_image_display_html($editing);
 
     if(!is_float($image_count / $gallery->perrow)) {
         echo $OUTPUT->box('', 'clearfix');
