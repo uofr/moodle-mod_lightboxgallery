@@ -40,6 +40,7 @@ $string['autoresize_help'] = 'You can control if and how gallery images are resi
 There is also an image resizing plugin included in the image editor, where you can manually resize images.';
 $string['allowcomments'] = 'Allow comments';
 $string['allowrss'] = 'Allow RSS feeds';
+$string['allpluginsdisabled'] = 'Sorry, all the editing plugins are currently disabled.';
 $string['backtogallery'] = 'Back to Gallery';
 $string['commentadded'] = 'Your comment has been posted to the gallery';
 $string['commentcount'] = '{$a} comments';

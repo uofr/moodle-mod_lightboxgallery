@@ -61,7 +61,11 @@ foreach ($edittypes as $type => $name) {
 
 if (!in_array($tab, array_keys($edittypes))) {
     $types = array_keys($edittypes);
-    $tab = $types[0];
+    if (isset($types[0])) {
+        $tab = $types[0];
+    } else {
+        notice(get_string('allpluginsdisabled', 'lightboxgallery'), "view.php?id=$id&page=$page");
+    }
 }
 
 require($CFG->dirroot.'/mod/lightboxgallery/edit/'.$tab.'/'.$tab.'.class.php');
