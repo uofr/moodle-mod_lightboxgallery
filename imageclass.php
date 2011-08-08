@@ -198,7 +198,7 @@ class lightboxgallery_image {
     }
 
     public function get_image_display_html($editing = true) {
-        $caption = $this->get_image_caption();
+        $caption = lightboxgallery_resize_label($this->get_image_caption());
         $timemodified = strftime(get_string('strftimedatetimeshort', 'langconfig'), $this->stored_file->get_timemodified());
         $filesize = round($this->stored_file->get_filesize() / 100) / 10;
 
