@@ -50,7 +50,7 @@ $PAGE->set_pagelayout('incourse');
 $PAGE->set_url('/mod/lightboxgallery/imageedit.php', array('id' => $cm->id, 'image' => $image, 'tab' => $tab, 'page' => $page));
 $PAGE->set_title($gallery->name);
 $PAGE->set_heading($course->shortname);
-$PAGE->set_button($OUTPUT->single_button($CFG->wwwroot.'/mod/lightboxgallery/view.php?id='.$id.'&page='.$page, get_string('backtogallery','lightboxgallery')));
+$PAGE->set_button($OUTPUT->single_button($CFG->wwwroot.'/mod/lightboxgallery/view.php?id='.$id.'&editing=1&page='.$page, get_string('backtogallery','lightboxgallery')));
 
 $edittypes = lightboxgallery_edit_types();
 
