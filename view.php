@@ -125,12 +125,13 @@ echo ($pagingbar ? $OUTPUT->render($pagingbar) : '');
 $showtags = !in_array('tag', explode(',', get_config('lightboxgallery', 'disabledplugins')));
 
 if (!$editing && $showtags) {
-    $sql = "SELECT description
+    $desc_compare = $DB->sql_compare_text('description');
+    $sql = "SELECT $desc_compare
               FROM {lightboxgallery_image_meta}
              WHERE gallery = {$gallery->id}
                AND metatype = 'tag'
-          GROUP BY description
-          ORDER BY COUNT(description) DESC,
+          GROUP BY $desc_compare
+          ORDER BY COUNT($desc_compare) DESC,
                    description ASC";
     if ($tags = $DB->get_records_sql($sql, array(), 0, 10)) {
         lightboxgallery_print_tags(get_string('tagspopular', 'lightboxgallery'), $tags, $course->id, $gallery->id);
