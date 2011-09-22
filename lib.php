@@ -112,9 +112,18 @@ function lightboxgallery_delete_instance($id) {
         return false;
     }
 
-    $DB->delete_records('lightboxgallery', 'id', $gallery->id);
-    $DB->delete_records('lightboxgallery_comments', 'gallery', $gallery->id);
-    $DB->delete_records('lightboxgallery_image_meta', 'gallery', $gallery->id);
+    $cm = get_coursemodule_from_instance('lightboxgallery', $gallery->id);
+    $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+    // files
+    $fs = get_file_storage();
+    $fs->delete_area_files($context->id, 'mod_lightboxgallery');
+
+    // delete all the records and fields
+    $DB->delete_records('lightboxgallery_comments', array('gallery' => $gallery->id) );
+    $DB->delete_records('lightboxgallery_image_meta', array('gallery' => $gallery->id));
+
+    //delete the instance itself
+    $DB->delete_records('lightboxgallery', array('id' => $id));
 
     return true;
 }
