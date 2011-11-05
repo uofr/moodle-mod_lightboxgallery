@@ -26,6 +26,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['acceptablefiletypebriefing'] = 'If you wish to upload multiple files at a time, you can submit a zip file with images inside it and all valid images inside the zip archive will be added to the gallery.';
 $string['addcomment'] = 'Add comment';
 $string['addimage'] = 'Add images';
 $string['addimage_help'] = 'Browse for an image on your local machine to add to the current gallery.

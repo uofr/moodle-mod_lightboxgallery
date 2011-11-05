@@ -52,27 +52,20 @@ if ($mform->is_cancelled()) {
 } else if (($formdata = $mform->get_data()) && confirm_sesskey()) {
     require_once($CFG->dirroot . '/lib/uploadlib.php');
 
-    $filename = $mform->get_new_filename('image');
-
-    $fileinfo = array(
-        'contextid'     => $context->id,
-        'component'     => 'mod_lightboxgallery',
-        'filearea'      => 'gallery_images',
-        'itemid'        => 0,
-        'filepath'      => '/',
-        'filename'      => $filename);
-
     $fs = get_file_storage();
-    $stored_file = $fs->create_file_from_string($fileinfo, $mform->get_file_content('image'));
+    $draftid = file_get_submitted_draft_itemid('image');
+    if (!$files = $fs->get_area_files(get_context_instance(CONTEXT_USER, $USER->id)->id, 'user', 'draft', $draftid, 'id DESC', false)) {
+        redirect($PAGE->url);
+    }
+    $stored_file = reset($files);
 
-    $image = new lightboxgallery_image($stored_file, $gallery, $cm);
-    $image->set_caption($filename);
-
+    lightboxgallery_add_images($stored_file, $context, $cm, $gallery);
     redirect($CFG->wwwroot.'/mod/lightboxgallery/view.php?id='.$cm->id);
 
 }
 
 echo $OUTPUT->header();
+echo $OUTPUT->box($OUTPUT->notification(get_string('acceptablefiletypebriefing', 'mod_lightboxgallery')));
 
 $mform->display();
 

@@ -23,7 +23,7 @@
  * logic, should go here. Never include this file from your lib.php!
  *
  * @package   mod_lightboxgallery
- * @copyright 2010 John Kelsh
+ * @copyright 2011 NetSpot Pty Ltd
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -39,6 +39,44 @@ define('MAX_COMMENT_PREVIEW', 20);
 define('AUTO_RESIZE_SCREEN', 1);
 define('AUTO_RESIZE_UPLOAD', 2);
 define('AUTO_RESIZE_BOTH', 3);
+
+function lightboxgallery_add_images($stored_file, $context, $cm, $gallery) {
+    require_once(dirname(__FILE__).'/imageclass.php');
+
+    $fs = get_file_storage();
+
+    $images = array();
+    if ($stored_file->get_mimetype() == 'application/zip') {
+        //unpack
+        $packer = get_file_packer('application/zip');
+        $fs->delete_area_files($context->id, 'mod_lightboxgallery', 'unpacktemp', 0);
+        $stored_file->extract_to_storage($packer, $context->id, 'mod_lightboxgallery', 'unpacktemp', 0, '/');
+        $images = $fs->get_area_files($context->id, 'mod_lightboxgallery', 'unpacktemp', 0);
+        $stored_file->delete();
+    } else {
+        $images[] = $stored_file;
+    }
+
+    foreach ($images as $stored_file) {
+        if ($stored_file->is_valid_image()) {
+            $filename = $stored_file->get_filename();
+            $fileinfo = array(
+                'contextid'     => $context->id,
+                'component'     => 'mod_lightboxgallery',
+                'filearea'      => 'gallery_images',
+                'itemid'        => 0,
+                'filepath'      => '/',
+                'filename'      => $filename
+            );
+            if (!$fs->get_file($context->id, 'mod_lightboxgallery', 'gallery_images', 0, '/', $filename)) {
+                $stored_file = $fs->create_file_from_storedfile($fileinfo, $stored_file);
+                $image = new lightboxgallery_image($stored_file, $gallery, $cm);
+                $image->set_caption($filename);
+            }
+        }
+    }
+    $fs->delete_area_files($context->id, 'mod_lightboxgallery', 'unpacktemp', 0);
+}
 
 function lightboxgallery_config_defaults() {
     $defaults = array(
