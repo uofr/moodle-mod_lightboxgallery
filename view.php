@@ -132,7 +132,7 @@ if (!$editing && $showtags) {
                AND metatype = 'tag'
           GROUP BY $desc_compare
           ORDER BY COUNT($desc_compare) DESC,
-                   description ASC";
+                   $desc_compare ASC";
     if ($tags = $DB->get_records_sql($sql, array(), 0, 10)) {
         lightboxgallery_print_tags(get_string('tagspopular', 'lightboxgallery'), $tags, $course->id, $gallery->id);
     }
