@@ -63,6 +63,18 @@ class mod_lightboxgallery_mod_form extends moodleform_mod {
         $mform->setType('perrow', PARAM_INTEGER);
         $mform->setAdvanced('perrow');
 
+        $yesno = array(0 => get_string('no'), 1 => get_string('yes'));
+
+        $mform->addElement('select', 'captionfull', get_string('captionfull', 'lightboxgallery'), $yesno);
+        $mform->setAdvanced('captionfull');
+
+        $captionposopts = array(
+            '0' => get_string('position_bottom', 'lightboxgallery'),
+            '1' => get_string('position_top', 'lightboxgallery'),
+        );
+        $mform->addElement('select', 'captionpos', get_string('captionpos', 'lightboxgallery'), $captionposopts);
+        $mform->setAdvanced('captionpos');
+
         $autoresizegroup = array();
         $autoresizegroup[] = &$mform->createElement('select', 'autoresize', get_string('autoresize', 'lightboxgallery'), $this->get_autoresize_options());
         $autoresizegroup[] = &$mform->createElement('checkbox', 'autoresizedisabled', null, get_string('disable'));
@@ -77,8 +89,6 @@ class mod_lightboxgallery_mod_form extends moodleform_mod {
         $mform->setAdvanced('resize');
         $mform->disabledIf('resize', 'autoresize', 'eq', 1);
         $mform->disabledIf('resize', 'autoresizedisabled', 'checked');
-
-        $yesno = array(0 => get_string('no'), 1 => get_string('yes'));
 
         $mform->addElement('select', 'comments', get_string('allowcomments', 'lightboxgallery'), $yesno);
         $mform->setType('comments', PARAM_INTEGER);

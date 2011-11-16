@@ -50,7 +50,12 @@
 }
 
 .lightbox-gallery .lightbox-gallery-image-caption {
-        font-weight:    bold;
+    font-weight: bold;
+    word-wrap: break-word;
+}
+
+.lightbox-gallery .lightbox-gallery-image-caption.top {
+    margin-bottom: -3px;
 }
 
 

@@ -251,6 +251,23 @@ function xmldb_lightboxgallery_upgrade($oldversion=0) {
         upgrade_mod_savepoint(true, 2011071100, 'lightboxgallery');
     }
 
+    if($oldversion < 2011111600) {
+        $table = new xmldb_table('lightboxgallery');
+
+        $field = new xmldb_field('captionfull', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'extinfo');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field, 'extinfo');
+        }
+
+        $field = new xmldb_field('captionpos', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'captionfull');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field, 'captionfull');
+        }
+
+        upgrade_mod_savepoint(true, 2011111600, 'lightboxgallery');
+    }
+
+
     return true;
 }
 
