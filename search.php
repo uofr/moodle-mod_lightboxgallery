@@ -88,11 +88,11 @@ if ($results = $DB->get_records_select('lightboxgallery_image_meta', $DB->sql_li
 
     foreach ($results as $result) {
         if (!isset($hashes[$result->image])) {
-            $stored_file = $fs->get_file_by_hash($result->image);
-
-            $image = new lightboxgallery_image($stored_file, $gallery, $cm);
-            echo $image->get_image_display_html();
-            $hashes[$result->image] = 1;
+            if ($stored_file = $fs->get_file($context->id, 'mod_lightboxgallery', 'gallery_images', 0, '/', $result->image)) {
+                $image = new lightboxgallery_image($stored_file, $gallery, $cm);
+                echo $image->get_image_display_html();
+                $hashes[$result->image] = 1;
+            }
         }
     }
 
