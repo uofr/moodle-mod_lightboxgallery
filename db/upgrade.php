@@ -203,7 +203,9 @@ function xmldb_lightboxgallery_upgrade($oldversion=0) {
         //get list of files based on path
         if ($galleries = $DB->get_records('lightboxgallery')) {
             foreach ($galleries as $gallery) {
-                $cm = get_coursemodule_from_instance('lightboxgallery', $gallery->id, $gallery->course, false, MUST_EXIST);
+                if (!$cm = get_coursemodule_from_instance('lightboxgallery', $gallery->id, $gallery->course, false)) {
+                    continue;
+                }
                 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
                 $coursecontext = get_context_instance(CONTEXT_COURSE, $gallery->course);
 
