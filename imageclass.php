@@ -219,7 +219,7 @@ class lightboxgallery_image {
         if ($this->gallery->captionpos == LIGHTBOXGALLERY_POS_TOP) {
             $html .= $captiondiv;
         }
-        $html .= '<a class="lightbox-gallery-image-thumbnail" href="'.$this->image_url.'"rel="lightbox[gallery]" title="'.$caption.'" style="background-image: url(\''.$this->thumb_url.'\'); width: '.THUMBNAIL_WIDTH.'px; height: '.THUMBNAIL_HEIGHT.'px;"></a>';
+        $html .= '<a class="lightbox-gallery-image-thumbnail" href="'.$this->image_url.'" rel="lightbox_gallery" title="'.$caption.'" style="background-image: url(\''.$this->thumb_url.'\'); width: '.THUMBNAIL_WIDTH.'px; height: '.THUMBNAIL_HEIGHT.'px;"></a>';
         if ($this->gallery->captionpos == LIGHTBOXGALLERY_POS_BOT) {
             $html .= $captiondiv;
         }
