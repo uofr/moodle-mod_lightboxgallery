@@ -200,6 +200,15 @@ function lightboxgallery_user_complete($course, $user, $mod, $resource) {
     }
 }
 
+/**
+ * Returns all other caps used in module
+ *
+ * @return array
+ */
+function lightboxgallery_get_extra_capabilities() {
+    return array('moodle/course:viewhiddenactivities');
+}
+
 function lightboxgallery_get_recent_mod_activity(&$activities, &$index, $timestart, $courseid, $cmid, $userid=0, $groupid=0) {
     global $DB, $CFG, $COURSE;
 
