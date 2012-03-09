@@ -291,6 +291,10 @@ class lightboxgallery_image {
         return $rotated;
     }
 
+    public function get_image_url() {
+        return $this->image_url;
+    }
+
     public function get_tags() {
         global $DB;
 

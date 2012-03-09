@@ -75,17 +75,17 @@ $PAGE->requires->css('/mod/lightboxgallery/assets/skins/sam/gallery-lightbox-ski
 $PAGE->requires->js('/mod/lightboxgallery/gallery-lightbox-min.js');
 $PAGE->requires->js('/mod/lightboxgallery/module.js');
 
-echo $OUTPUT->header();
-
 $allowrssfeed = (lightboxgallery_rss_enabled() && $gallery->rss);
+$heading = get_string('displayinggallery', 'lightboxgallery', $gallery->name);
 
 if ($allowrssfeed) {
-    $rsspath = rss_get_url($course->id, $userid, 'lightboxgallery', $gallery->id);
-    $meta .= "\n".'<link rel="alternate" href="'.$rsspath.'" type="application/rss+xml" title="'.format_string($gallery->name).'" id="gallery" />';
-    $heading .= ' '.rss_get_link($course->id, $userid, 'lightboxgallery', $gallery->id, get_string('rsssubscribe', 'lightboxgallery'));
+    rss_add_http_header($context, 'mod_lightboxgallery', $gallery->id, $gallery->name);
+    $heading .= ' '.rss_get_link($context->id, $userid, 'mod_lightboxgallery', $gallery->id, get_string('rsssubscribe', 'lightboxgallery'));
 }
 
-echo $OUTPUT->heading(get_string('displayinggallery', 'lightboxgallery', $gallery->name));
+echo $OUTPUT->header();
+
+echo $OUTPUT->heading($heading);
 
 if ($gallery->intro && !$editing) {
     echo $OUTPUT->box(format_module_intro('lightboxgallery', $gallery, $cm->id), 'generalbox', 'intro');
