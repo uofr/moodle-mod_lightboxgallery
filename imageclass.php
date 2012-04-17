@@ -192,7 +192,7 @@ class lightboxgallery_image {
         global $DB;
         $caption = '';
 
-        if($image_meta = $DB->get_record('lightboxgallery_image_meta', array('image' => $this->stored_file->get_filename(), 'metatype' => 'caption'))) {
+        if($image_meta = $DB->get_record('lightboxgallery_image_meta', array('gallery' => $this->gallery->id, 'image' => $this->stored_file->get_filename(), 'metatype' => 'caption'))) {
             $caption = $image_meta->description;
         }
 
