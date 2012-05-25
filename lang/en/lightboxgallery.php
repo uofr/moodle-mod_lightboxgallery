@@ -93,6 +93,7 @@ $string['imagesperrow'] = 'Images per row';
 $string['imageuploaded'] = 'Uploaded image: {$a}';
 $string['lightboxgallery'] = 'Lightbox Gallery';
 $string['lightboxgallery:addcomment'] = 'Add comment to lightbox gallery';
+$string['lightboxgallery:addinstance'] = 'Add a new lightbox gallery';
 $string['lightboxgallery:addimage'] = 'Add image to lightbox gallery';
 $string['lightboxgallery:edit'] = 'Edit a lightbox gallery';
 $string['lightboxgallery:submit'] = 'Submit a lightbox gallery';
