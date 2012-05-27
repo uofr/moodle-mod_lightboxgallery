@@ -33,14 +33,34 @@ require_once(dirname(__FILE__).'/imageclass.php');
 
 global $DB;
 
-$id = required_param('id', PARAM_INT); // Course module id
+$id = optional_param('id', 0, PARAM_INT); // Course module id
+$l = optional_param('l', 0, PARAM_INT); // instance id
 $page = optional_param('page', 0, PARAM_INT);
 $search  = optional_param('search', '', PARAM_TEXT);
 $editing = optional_param('editing', 0, PARAM_BOOL);
 
-$cm      = get_coursemodule_from_id('lightboxgallery', $id, 0, false, MUST_EXIST);
-$course  = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
-$gallery = $DB->get_record('lightboxgallery', array('id' => $cm->instance), '*', MUST_EXIST);
+if ($id) {
+    if (!$cm = get_coursemodule_from_id('lightboxgallery', $id)) {
+        print_error('invalidcoursemodule');
+    }
+    if (!$course = $DB->get_record('course', array('id' => $cm->course))) {
+        print_error('coursemisconf');
+    }
+    if (!$gallery = $DB->get_record('lightboxgallery', array('id' => $cm->instance))) {
+        print_error('invalidcoursemodule');
+    }
+} else {
+    if (!$gallery = $DB->get_record('lightboxgallery', array('id' => $l))) {
+        print_error('invalidlightboxgalleryid', 'lightboxgallery');
+    }
+    if (!$course = $DB->get_record('course', array('id' => $gallery->course))) {
+        print_error('invalidcourseid');
+    }
+    if (!$cm = get_coursemodule_from_instance("lightboxgallery", $gallery->id, $course->id)) {
+        print_error('invalidcoursemodule');
+    }
+}
+
 
 require_login($course, true, $cm);
 

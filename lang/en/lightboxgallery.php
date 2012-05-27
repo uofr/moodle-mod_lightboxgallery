@@ -91,6 +91,7 @@ $string['images'] = 'Images';
 $string['imagesperpage'] = 'Images per page';
 $string['imagesperrow'] = 'Images per row';
 $string['imageuploaded'] = 'Uploaded image: {$a}';
+$string['invalidquizid'] = 'Invalid lightboxgallery ID';
 $string['lightboxgallery'] = 'Lightbox Gallery';
 $string['lightboxgallery:addcomment'] = 'Add comment to lightbox gallery';
 $string['lightboxgallery:addinstance'] = 'Add a new lightbox gallery';
