@@ -1,5 +1,13 @@
 Moodle Lightbox Gallery for Moodle 2.0
 
+Further note, that when downloading from github, this plugin will be in a folder
+called 'netspotau-moodle-mod_lightboxgallery'. You need to place this in your
+mod/ folder found inside your Moodle installation. You'll also need to rename
+it to just 'lightboxgallery'.
+
+More info can be found in the docs here:
+http://docs.moodle.org/20/en/Installing_contributed_modules_or_plugins
+
  * ABOUT *
 
 This resource allows you to create 'Lightbox' enabled image galleries within your Moodle course. The
