@@ -117,7 +117,7 @@ function lightboxgallery_rss_feeds() {
     } else if (! get_config('lightboxgallery', 'enablerssfeeds')) {
         debugging('DISABLED (module configuration)');
     } else {
-        if ($galleries = get_records('lightboxgallery')) {
+        if ($galleries = $DB->get_records('lightboxgallery')) {
             foreach ($galleries as $gallery) {
                 if ($gallery->rss && $status) {
 
