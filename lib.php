@@ -172,7 +172,7 @@ function lightboxgallery_user_complete($course, $user, $mod, $resource) {
 
     $conditions = array('userid' => $user->id,  'module' => 'lightboxgallery', 'action' => 'view', 'info' => $resource->id);
 
-    if ($logs = get_records('log', $conditions, 'time ASC', '*', '0', '1')) {
+    if ($logs = $DB->get_records('log', $conditions, 'time ASC', '*', '0', '1')) {
         $numviews = $DB->count_records('log', $conditions);
         $lastlog = array_pop($logs);
 
@@ -182,13 +182,13 @@ function lightboxgallery_user_complete($course, $user, $mod, $resource) {
         echo $strnumviews.' - '.$strmostrecently.' '.userdate($lastlog->time);
 
         $sql = "SELECT c.*
-                  FROM {$CFG->prefix}lightboxgallery_comments c
-                       JOIN {$CFG->prefix}lightboxgallery l ON l.id = c.gallery
-                       JOIN {$CFG->prefix}user            u ON u.id = c.userid
-                 WHERE l.id = {$mod->instance} AND u.id = {$user->id}
+                  FROM {lightboxgallery_comments} c
+                       JOIN {lightboxgallery} l ON l.id = c.gallery
+                       JOIN {user}            u ON u.id = c.userid
+                 WHERE l.id = :mod AND u.id = :userid
               ORDER BY c.timemodified ASC";
-
-        if ($comments = $DB->get_records_sql($sql)) {
+        $params = array('mod' => $mod->instance, 'userid' => $user->id);
+        if ($comments = $DB->get_records_sql($sql, $params)) {
             $cm = get_coursemodule_from_id('lightboxgallery', $mod->id);
             $context = get_context_instance(CONTEXT_MODULE, $cm->id);
             foreach ($comments as $comment) {
