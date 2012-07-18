@@ -34,7 +34,6 @@ class edit_tag extends edit_base {
         $deleteform = '';
 
         if ($tags = $image->get_tags()) {
-            $textlib = textlib_get_instance();
             $deleteform = '<input type="hidden" name="delete" value="1" />';
             foreach ($tags as $tag) {
                 $deleteform .= '<label><input type="checkbox" name="deletetags[]" value="'.$tag->id.'" /> '.
