@@ -56,10 +56,11 @@ if ($delete && has_capability('mod/lightboxgallery:edit', $context)) {
         echo $OUTPUT->header();
         lightboxgallery_print_comment($comment, $context);
         echo('<br />');
-        notice_yesno(get_string('commentdelete', 'lightboxgallery'),
-                     $CFG->wwwroot . '/mod/lightboxgallery/comment.php', $CFG->wwwroot . '/mod/lightboxgallery/view.php',
-                     array('id' => $gallery->id, 'delete' => $comment->id, 'sesskey' => sesskey(), 'confirm' => 1),
-                     array('id' => $cm->id), 'post', 'get');
+        $paramsyes = array('id' => $gallery->id, 'delete' => $comment->id, 'sesskey' => sesskey(), 'confirm' => 1);
+        $paramsno = array('id' => $cm->id);
+        echo $OUTPUT->confirm(get_string('commentdelete', 'lightboxgallery'),
+                              new moodle_url('/mod/lightboxgallery/comment.php', $paramsyes),
+                              new moodle_url('/mod/lightboxgallery/view.php', $paramsno));
         echo $OUTPUT->footer();
         die();
     }
