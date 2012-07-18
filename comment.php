@@ -1,4 +1,18 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once(dirname(__FILE__).'/locallib.php');
@@ -9,17 +23,17 @@ $delete  = optional_param('delete', 0, PARAM_INT);
 $confirm = optional_param('confirm', 0, PARAM_INT);
 
 if (! $gallery = $DB->get_record('lightboxgallery', array('id' => $id))) {
-    print_error('Course module is incorrect');
+    print_error('invalidlightboxgalleryid', 'lightboxgallery');
 }
 if (! $course = $DB->get_record('course', array('id' => $gallery->course))) {
-    print_error('Course is misconfigured');
+    print_error('invalidcourseid');
 }
 if (! $cm = get_coursemodule_from_instance('lightboxgallery', $gallery->id, $course->id)) {
-   print_error('Course Module ID was incorrect');
+    print_error('invalidcoursemodule');
 }
 
 if ($delete && ! $comment = $DB->get_record('lightboxgallery_comments', array('gallery' => $gallery->id, 'id' => $delete))) {
-   print_error('Invalid comment ID');
+    print_error('Invalid comment ID');
 }
 
 require_login($course->id);
@@ -44,8 +58,8 @@ if ($delete && has_capability('mod/lightboxgallery:edit', $context)) {
         echo('<br />');
         notice_yesno(get_string('commentdelete', 'lightboxgallery'),
                      $CFG->wwwroot . '/mod/lightboxgallery/comment.php', $CFG->wwwroot . '/mod/lightboxgallery/view.php',
-                     array('id' => $gallery->id, 'delete' => $comment->id, 'sesskey' => sesskey(), 'confirm' => 1), array('id' => $cm->id),
-                     'post', 'get');
+                     array('id' => $gallery->id, 'delete' => $comment->id, 'sesskey' => sesskey(), 'confirm' => 1),
+                     array('id' => $cm->id), 'post', 'get');
         echo $OUTPUT->footer();
         die();
     }
@@ -81,5 +95,3 @@ echo $OUTPUT->header();
 $mform->display();
 
 echo $OUTPUT->footer();
-
-?>
