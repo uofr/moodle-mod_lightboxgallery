@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -20,7 +19,7 @@
  * Prints a particular instance of lightboxgallery
  *
  * @package   mod_lightboxgallery
- * @copyright 2011 John Kelsh
+ * @copyright 2011 John Kelsh <john.kelsh@netspot.com.au>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -33,8 +32,8 @@ require_once(dirname(__FILE__).'/imageclass.php');
 
 global $DB;
 
-$id = optional_param('id', 0, PARAM_INT); // Course module id
-$l = optional_param('l', 0, PARAM_INT); // instance id
+$id = optional_param('id', 0, PARAM_INT); // Course module id.
+$l = optional_param('l', 0, PARAM_INT); // instance id.
 $page = optional_param('page', 0, PARAM_INT);
 $search  = optional_param('search', '', PARAM_TEXT);
 $editing = optional_param('editing', 0, PARAM_BOOL);
@@ -65,7 +64,6 @@ if ($id) {
 require_login($course, true, $cm);
 
 if ($gallery->ispublic) {
-    //course_setup($course->id);
     $userid = (isloggedin() ? $USER->id : 0);
 } else {
     require_login($course, true, $cm);
@@ -90,7 +88,15 @@ $PAGE->set_cm($cm);
 $PAGE->set_url('/mod/lightboxgallery/view.php', array('id' => $cm->id));
 $PAGE->set_title($gallery->name);
 $PAGE->set_heading($course->shortname);
-$PAGE->set_button((has_capability('mod/lightboxgallery:edit', $context) ? $OUTPUT->single_button($CFG->wwwroot.'/mod/lightboxgallery/view.php?id='.$id.'&page='.$page.'&editing='.($editing ? '0' : '1'), get_string('turnediting'.($editing ? 'off' : 'on')), 'get') : '').' '.update_module_button($cm->id, $course->id, get_string('modulename', 'lightboxgallery')));
+$button = '';
+if (has_capability('mod/lightboxgallery:edit', $context)) {
+    $url_params = array('id' => $id, 'page' => $page, 'editing' => $editing ? '0' : '1');
+    $url = new moodle_url('/mod/lightboxgallery/view.php', $url_params);
+    $strediting = get_string('turnediting'.($editing ? 'off' : 'on'));
+    $button = $OUTPUT->single_button($url, $strediting, 'get').' ';
+}
+$button .= update_module_button($cm->id, $course->id, get_string('modulename', 'lightboxgallery'));
+$PAGE->set_button($button);
 $PAGE->requires->css('/mod/lightboxgallery/assets/skins/sam/gallery-lightbox-skin.css');
 $PAGE->requires->js('/mod/lightboxgallery/gallery-lightbox-min.js');
 $PAGE->requires->js('/mod/lightboxgallery/module.js');
@@ -100,7 +106,8 @@ $heading = get_string('displayinggallery', 'lightboxgallery', $gallery->name);
 
 if ($allowrssfeed) {
     rss_add_http_header($context, 'mod_lightboxgallery', $gallery->id, $gallery->name);
-    $heading .= ' '.rss_get_link($context->id, $userid, 'mod_lightboxgallery', $gallery->id, get_string('rsssubscribe', 'lightboxgallery'));
+    $strrsssub = get_string('rsssubscribe', 'lightboxgallery');
+    $heading .= ' '.rss_get_link($context->id, $userid, 'mod_lightboxgallery', $gallery->id, $strrsssub);
 }
 
 echo $OUTPUT->header();
@@ -114,16 +121,17 @@ if ($gallery->intro && !$editing) {
 echo $OUTPUT->box_start('generalbox lightbox-gallery clearfix');
 
 $fs = get_file_storage();
-$stored_files = $fs->get_area_files($context->id,'mod_lightboxgallery','gallery_images');
+$stored_files = $fs->get_area_files($context->id, 'mod_lightboxgallery', 'gallery_images');
 
 $image_count = 1;
 
 foreach ($stored_files as $stored_file) {
-    if(!$stored_file->is_valid_image()) {
+    if (!$stored_file->is_valid_image()) {
         continue;
     }
 
-    if($gallery->perpage > 0 && (($image_count > (($gallery->perpage * $page) + $gallery->perpage) || ($image_count < ($gallery->perpage * $page) + 1)))) {
+    if ($gallery->perpage > 0 &&
+        (($image_count > (($gallery->perpage * $page) + $gallery->perpage) || ($image_count < ($gallery->perpage * $page) + 1)))) {
         $image_count++;
         continue;
     }
@@ -132,7 +140,7 @@ foreach ($stored_files as $stored_file) {
 
     echo $image->get_image_display_html($editing);
 
-    if(!is_float($image_count / $gallery->perrow)) {
+    if (!is_float($image_count / $gallery->perrow)) {
         echo $OUTPUT->box('', 'clearfix');
     }
 
@@ -142,9 +150,11 @@ foreach ($stored_files as $stored_file) {
 echo ($image_count < 1 ? print_string('errornoimages', 'lightboxgallery') : '');
 echo $OUTPUT->box_end();
 
-$pagingbar = ($gallery->perpage ? new paging_bar($image_count, $page, $gallery->perpage, $CFG->wwwroot.'/mod/lightboxgallery/view.php?id='.$cm->id.'&amp;' . ($editing ? 'editing=1&amp;' : '')) : '');
-echo ($pagingbar ? $OUTPUT->render($pagingbar) : '');
-
+if ($gallery->perpage) {
+    $barurl = $CFG->wwwroot.'/mod/lightboxgallery/view.php?id='.$cm->id.'&amp;' . ($editing ? 'editing=1&amp;' : '');
+    $pagingbar = new paging_bar($image_count, $page, $gallery->perpage, $barurl);
+    echo $OUTPUT->render($pagingbar);
+}
 
 $showtags = !in_array('tag', explode(',', get_config('lightboxgallery', 'disabledplugins')));
 
@@ -165,11 +175,13 @@ if (!$editing && $showtags) {
 $options = array();
 
 if (has_capability('mod/lightboxgallery:addimage', $context)) {
-    $options[] = '<a href="'.$CFG->wwwroot.'/mod/lightboxgallery/imageadd.php?id='.$cm->id.'">'.get_string('addimage', 'lightboxgallery').'</a>';
+    $opturl = new moodle_url('/mod/lightboxgallery/imageadd.php', array('id' => $cm->id));
+    $options[] = html_writer::link($opturl, get_string('addimage', 'lightboxgallery'));
 }
 
 if ($gallery->comments && has_capability('mod/lightboxgallery:addcomment', $context)) {
-    $options[] = '<a href="'.$CFG->wwwroot.'/mod/lightboxgallery/comment.php?id='.$gallery->id.'">'.get_string('addcomment', 'lightboxgallery').'</a>';
+    $opturl = new moodle_url('/mod/lightboxgallery/comment.php', array('id' => $gallery->id));
+    $options[] = html_writer::link($opturl, get_string('addcomment', 'lightboxgallery'));
 }
 
 if (count($options) > 0) {

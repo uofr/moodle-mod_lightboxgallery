@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -20,7 +19,7 @@
  * A page for uploading new images
  *
  * @package   mod_lightworkgallery
- * @copyright 2011 John Kelsh
+ * @copyright 2011 John Kelsh <john.kelsh@netspot.com.au>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -54,7 +53,8 @@ if ($mform->is_cancelled()) {
 
     $fs = get_file_storage();
     $draftid = file_get_submitted_draft_itemid('image');
-    if (!$files = $fs->get_area_files(get_context_instance(CONTEXT_USER, $USER->id)->id, 'user', 'draft', $draftid, 'id DESC', false)) {
+    if (!$files = $fs->get_area_files(
+        get_context_instance(CONTEXT_USER, $USER->id)->id, 'user', 'draft', $draftid, 'id DESC', false)) {
         redirect($PAGE->url);
     }
     $stored_file = reset($files);

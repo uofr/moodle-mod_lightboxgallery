@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -114,15 +113,15 @@ function lightboxgallery_delete_instance($id) {
 
     $cm = get_coursemodule_from_instance('lightboxgallery', $gallery->id);
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
-    // files
+    // Files.
     $fs = get_file_storage();
     $fs->delete_area_files($context->id, 'mod_lightboxgallery');
 
-    // delete all the records and fields
+    // Delete all the records and fields.
     $DB->delete_records('lightboxgallery_comments', array('gallery' => $gallery->id) );
     $DB->delete_records('lightboxgallery_image_meta', array('gallery' => $gallery->id));
 
-    //delete the instance itself
+    // Delete the instance itself.
     $DB->delete_records('lightboxgallery', array('id' => $id));
 
     return true;
@@ -262,14 +261,20 @@ function lightboxgallery_get_recent_mod_activity(&$activities, &$index, $timesta
 function lightboxgallery_print_recent_mod_activity($activity, $courseid, $detail, $modnames, $viewfullnames) {
     global $CFG, $OUTPUT;
 
+    $userviewurl = new moodle_url('/user/view.php', array('id' => $activity->user->id, 'course' => $courseid));
     echo '<table border="0" cellpadding="3" cellspacing="0">'.
-         '<tr><td class="userpicture" valign="top">'.$OUTPUT->user_picture($activity->user, array('courseid' => $courseid)).'</td><td>'.
+         '<tr><td class="userpicture" valign="top">'.$OUTPUT->user_picture($activity->user, array('courseid' => $courseid)).
+         '</td><td>'.
          '<div class="title">'.
-         ($detail ? '<img src="'.$CFG->modpixpath.'/'.$activity->type.'/icon.gif" class="icon" alt="'.s($activity->name).'" />' : '').
-         '<a href="'.$CFG->wwwroot.'/mod/lightboxgallery/view.php?id='.$activity->cmid.'#c'.$activity->content->id.'">'.$activity->content->comment.'</a>'.
+         ($detail ?
+            '<img src="'.$CFG->modpixpath.'/'.$activity->type.'/icon.gif" class="icon" alt="'.s($activity->name).'" />' : ''
+         ).
+         '<a href="'.$CFG->wwwroot.'/mod/lightboxgallery/view.php?id='.$activity->cmid.'#c'.$activity->content->id.'">'.
+         $activity->content->comment.'</a>'.
          '</div>'.
-         '<div class="user">'.
-         ' <a href="'.$CFG->wwwroot.'/user/view.php?id='.$activity->user->id.'&amp;course='.$courseid.'"> '.fullname($activity->user, $viewfullnames).'</a> - '.userdate($activity->timestamp).
+         '<div class="user"> '.
+         html_writer::link($userviewurl, fullname($activity->user, $viewfullnames)).
+         ' - '.userdate($activity->timestamp).
          '</div>'.
          '</td></tr></table>';
 
@@ -308,7 +313,8 @@ function lightboxgallery_print_recent_activity($course, $viewfullnames, $timesta
                  '  <div class="name">'.fullname($comment, $viewfullnames).' - '.format_string($comment->name).'</div>'.
                  ' </div>'.
                  ' <div class="info">'.
-                 '  "<a href="'.$CFG->wwwroot.'/mod/lightboxgallery/view.php?l='.$comment->gallery.'#c'.$comment->id.'">'.$display.'</a>"'.
+                 '  "<a href="'.$CFG->wwwroot.'/mod/lightboxgallery/view.php?l='.$comment->gallery.'#c'.$comment->id.'">'.
+                 $display.'</a>"'.
                  ' </div>'.
                  '</li>';
             echo $output;
@@ -373,7 +379,7 @@ function lightboxgallery_pluginfile($course, $cm, $context, $filearea, $args, $f
         return false;
     }
 
-    send_stored_file($file, 0, 0, true); // download MUST be forced - security!
+    send_stored_file($file, 0, 0, true); // Download MUST be forced - security!
 
     return;
 
@@ -410,7 +416,6 @@ function lightboxgallery_get_file_areas($course, $cm, $context) {
 function lightboxgallery_get_file_info($browser, $areas, $course, $cm, $context, $filearea, $itemid, $filepath, $filename) {
     global $CFG;
 
-
     if ($filearea === 'gallery_images') {
         $fs = get_file_storage();
 
@@ -420,7 +425,7 @@ function lightboxgallery_get_file_info($browser, $areas, $course, $cm, $context,
             if ($filepath === '/' and $filename === '.') {
                 $storedfile = new virtual_root_file($context->id, 'mod_lightboxgallery', 'gallery_images', 0);
             } else {
-                // not found
+                // Not found.
                 return null;
             }
         }
@@ -428,10 +433,11 @@ function lightboxgallery_get_file_info($browser, $areas, $course, $cm, $context,
         require_once("$CFG->dirroot/mod/lightboxgallery/locallib.php");
         $urlbase = $CFG->wwwroot.'/pluginfile.php';
 
-        return new lightboxgallery_content_file_info($browser, $context, $storedfile, $urlbase, $areas[$filearea], true, true, false, false);
+        return new lightboxgallery_content_file_info($browser, $context, $storedfile, $urlbase, $areas[$filearea],
+                                                        true, true, false, false);
     }
 
-    // note: folder_intro handled in file_browser automatically
+    // Note: folder_intro handled in file_browser automatically.
 
     return null;
 }

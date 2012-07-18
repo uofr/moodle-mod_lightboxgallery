@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -102,9 +101,9 @@ $string['lightboxgallery:viewcomments'] = 'Kommentare in Lightbox Galerie sehen'
 $string['makepublic'] = 'Öffentlich machen';
 $string['metadata'] = 'Metadaten';
 $string['modulename'] = 'Lightbox Galerie';
-$string['modulename_help'] = 'Das Modul \'Lightbox Galerie\' erlaubt die Präsentation von Bildern in einer Galerie. 
+$string['modulename_help'] = 'Das Modul \'Lightbox Galerie\' erlaubt die Präsentation von Bildern in einer Galerie.
 
-Trainer/innen können eine Lightbox Galerie innerhalb ihres Kurses angelegen, bearbeiten und löschen. Bilder können einzeln und als ZIP-Datei hochgeladen werden. Beim Hinzufügen werden automatisch Miniaturbilder erzeugt und in einer Vorschau verwendet. Mit einem Klick auf ein Minaturbild in der Vorschau erscheint dieses Bild in vergrößerter Darstellung. Von hieraus ist es möglich, innerhalb der Galerie bildweise vorwärts und rückwärts zu blättern. Die Lightbox Skripte zeigen schöne Überblendeffekte beim Öffnen und Blättern. 
+Trainer/innen können eine Lightbox Galerie innerhalb ihres Kurses angelegen, bearbeiten und löschen. Bilder können einzeln und als ZIP-Datei hochgeladen werden. Beim Hinzufügen werden automatisch Miniaturbilder erzeugt und in einer Vorschau verwendet. Mit einem Klick auf ein Minaturbild in der Vorschau erscheint dieses Bild in vergrößerter Darstellung. Von hieraus ist es möglich, innerhalb der Galerie bildweise vorwärts und rückwärts zu blättern. Die Lightbox Skripte zeigen schöne Überblendeffekte beim Öffnen und Blättern.
 
 Nutzer/innen können Kommentare in der Galerie schreiben, wenn die entsprechende Option aktiviert ist.';
 $string['modulenameplural'] = 'Lightbox Galerien';

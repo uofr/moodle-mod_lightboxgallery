@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -73,7 +72,7 @@ if ($instances = get_all_instances_in_course('lightboxgallery', $course)) {
     $table->data[] = array(get_string('modulenameshort', 'lightboxgallery'), html_writer::select($options, 'gallery', $g),
                            '<input type="text" name="search" size="10" value="'.s($search, true).'" />' .
                            '<input type="hidden" name="id" value="'.$cm->id.'" />',
-                           '<input type="submit" value="'.get_string('search').'" />') ;
+                           '<input type="submit" value="'.get_string('search').'" />');
     echo html_writer::table($table);
 
     echo('</form>');
@@ -81,7 +80,8 @@ if ($instances = get_all_instances_in_course('lightboxgallery', $course)) {
 
 $fs = get_file_storage();
 
-if ($results = $DB->get_records_select('lightboxgallery_image_meta', $DB->sql_like('description', '?', false).($g > 0 ? 'AND gallery = ?' : ''), array('%'.$search.'%', ($g > 0 ? $g : null)))) {
+if ($results = $DB->get_records_select('lightboxgallery_image_meta',
+        $DB->sql_like('description', '?', false).($g > 0 ? 'AND gallery = ?' : ''), array('%'.$search.'%', ($g > 0 ? $g : null)))) {
     echo $OUTPUT->box_start('generalbox lightbox-gallery clearfix');
 
     $hashes = array();

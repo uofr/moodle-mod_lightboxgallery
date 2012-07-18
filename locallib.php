@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -47,7 +46,7 @@ function lightboxgallery_add_images($stored_file, $context, $cm, $gallery) {
 
     $images = array();
     if ($stored_file->get_mimetype() == 'application/zip') {
-        //unpack
+        // Unpack.
         $packer = get_file_packer('application/zip');
         $fs->delete_area_files($context->id, 'mod_lightboxgallery', 'unpacktemp', 0);
         $stored_file->extract_to_storage($packer, $context->id, 'mod_lightboxgallery', 'unpacktemp', 0, '/');
@@ -116,17 +115,20 @@ function lightboxgallery_print_comment($comment, $context) {
 
     $user = $DB->get_record('user', array('id' => $comment->userid));
 
+    $deleteurl = new moodle_url('/mod/lightboxgallery/comment.php', array('id' => $comment->gallery, 'delete' => $comment->id));
+
     echo '<table cellspacing="0" width="50%" class="boxaligncenter datacomment forumpost">'.
          '<tr class="header"><td class="picture left">'.$OUTPUT->user_picture($user, array('courseid' => $COURSE->id)).'</td>'.
          '<td class="topic starter" align="left"><a name="c'.$comment->id.'"></a><div class="author">'.
-         '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$user->id.'&amp;course='.$COURSE->id.'">'.fullname($user, has_capability('moodle/site:viewfullnames', $context)).'</a> - '.userdate($comment->timemodified).
+         '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$user->id.'&amp;course='.$COURSE->id.'">'.
+         fullname($user, has_capability('moodle/site:viewfullnames', $context)).'</a> - '.userdate($comment->timemodified).
          '</div></td></tr>'.
          '<tr><td class="left side">'.
-//         ($groups = user_group($COURSE->id, $user->id) ? print_group_picture($groups, $COURSE->id, false, false, true) : '&nbsp;').
+    // TODO: user_group picture?
          '</td><td class="content" align="left">'.
          format_text($comment->comment, FORMAT_MOODLE).
          '<div class="commands">'.
-         (has_capability('mod/lightboxgallery:edit', $context) ? '<a href="'.$CFG->wwwroot.'/mod/lightboxgallery/comment.php?id='.$comment->gallery.'&amp;delete='.$comment->id.'">'.get_string('delete').'</a>' : '').
+         (has_capability('mod/lightboxgallery:edit', $context) ? html_writer::link($deleteurl, get_string('delete')) : '').
          '</div>'.
          '</td></tr></table>';
 }
@@ -148,7 +150,9 @@ function lightboxgallery_print_tags($heading, $tags, $courseid, $galleryid) {
 
     $tagarray = array();
     foreach ($tags as $tag) {
-        $tagarray[] = '<a class="taglink" href="'.$CFG->wwwroot.'/mod/lightboxgallery/search.php?id='.$courseid.'&amp;gallery='.$galleryid.'&amp;search='.urlencode(stripslashes($tag->description)).'">'.s($tag->description).'</a>';
+        $tagparams = array('id' => $courseid, 'gallery' => $galleryid, 'search' => urlencode(stripslashes($tag->description)));
+        $tagurl = new moodle_url('/mod/lightboxgallery/search.php', $tagparams);
+        $tagarray[] = html_writer::link($tagurl, s($tag->description), array('class' => 'taglink'));
     }
 
     echo implode(', ', $tagarray);
@@ -187,18 +191,18 @@ function lightboxgallery_index_thumbnail($courseid, $gallery, $newimage = null) 
     $fs = get_file_storage();
     $stored_file = $fs->get_file($context->id, 'mod_lightboxgallery', 'gallery_index', '0', '/', 'index.png');
 
-    if (!is_null($newimage) && is_object($stored_file)) { //delete any existing index
+    if (!is_null($newimage) && is_object($stored_file)) { // Delete any existing index.
         $stored_file->delete();
     }
     if (is_object($stored_file) && is_null($newimage)) {
-        //grab the index
+        // Grab the index.
         $index = $stored_file;
     } else {
-        //get first image and create an index for that
+        // Get first image and create an index for that.
         if (is_null($newimage)) {
-            $files = $fs->get_area_files($context->id,'mod_lightboxgallery','gallery_images');
+            $files = $fs->get_area_files($context->id, 'mod_lightboxgallery', 'gallery_images');
             $file = array_shift($files);
-            while (substr($file->get_mimetype(),0,6) != 'image/') {
+            while (substr($file->get_mimetype(), 0, 6) != 'image/') {
                 $file = array_shift($files);
             }
             $image = new lightboxgallery_image($file, $gallery, $cm);
