@@ -58,7 +58,7 @@ class edit_tag extends edit_base {
         if ($tag) {
             $image->add_tag($tag);
         } else if (optional_param('delete', 0, PARAM_INT)) {
-            if ($deletes = optional_param('deletetags', array(), PARAM_RAW)) {
+            if ($deletes = optional_param_array('deletetags', array(), PARAM_RAW)) {
                 foreach ($deletes as $delete) {
                     $image->delete_tag(clean_param($delete, PARAM_INT));
                 }
