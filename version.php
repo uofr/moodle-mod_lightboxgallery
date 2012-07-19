@@ -29,6 +29,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 $module->version  = 2012052500;  // The current module version (Date: YYYYMMDDXX).
-$module->requires = 2010122500;  // Requires this Moodle version.
+$module->requires = 2011120500;  // Requires this Moodle version.
 $module->cron     = 0;           // Period for cron to check this module (secs).
+
+$module->component = 'mod_lightboxgallery';
+$module->maturity = MATURITY_STABLE;
 
