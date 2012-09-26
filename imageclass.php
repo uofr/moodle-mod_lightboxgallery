@@ -65,7 +65,7 @@ class lightboxgallery_image {
         $this->width = $image_info['width'];
 
         if (!$this->thumbnail = $this->get_thumbnail()) {
-            $this->create_thumbnail();
+            $this->thumbnail = $this->create_thumbnail();
         }
     }
 
@@ -96,12 +96,9 @@ class lightboxgallery_image {
         imagepng($this->get_image_resized(THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH, $offsetx, $offsety));
         $thumbnail = ob_get_clean();
 
-        if ($this->thumbnail) {
-            $this->delete_thumbnail();
-        }
+        $this->delete_thumbnail();
         $fs = get_file_storage();
-        $fs->create_file_from_string($fileinfo, $thumbnail);
-        return;
+        return $fs->create_file_from_string($fileinfo, $thumbnail);
     }
 
     public function create_index() {
@@ -144,7 +141,7 @@ class lightboxgallery_image {
     }
 
     private function delete_thumbnail() {
-        if (isset($this->thumbnail)) {
+        if (isset($this->thumbnail) && is_object($this->thumbnail)) {
             $this->thumbnail->delete();
             unset($this->thumbnail);
         }
@@ -362,9 +359,12 @@ class lightboxgallery_image {
 
         $this->delete_file();
         $fs = get_file_storage();
-        $fs->create_file_from_string($fileinfo, $resized);
+        $this->stored_file = $fs->create_file_from_string($fileinfo, $resized);
+        $image_info = $this->stored_file->get_imageinfo();
+        $this->height = $image_info['height'];
+        $this->width = $image_info['width'];
 
-        $this->create_thumbnail();
+        $this->thumbnail = $this->create_thumbnail();
 
         return $fileinfo['filename'];
     }

@@ -39,7 +39,7 @@ define('AUTO_RESIZE_SCREEN', 1);
 define('AUTO_RESIZE_UPLOAD', 2);
 define('AUTO_RESIZE_BOTH', 3);
 
-function lightboxgallery_add_images($stored_file, $context, $cm, $gallery) {
+function lightboxgallery_add_images($stored_file, $context, $cm, $gallery, $resize = 0) {
     require_once(dirname(__FILE__).'/imageclass.php');
 
     $fs = get_file_storage();
@@ -70,6 +70,13 @@ function lightboxgallery_add_images($stored_file, $context, $cm, $gallery) {
             if (!$fs->get_file($context->id, 'mod_lightboxgallery', 'gallery_images', 0, '/', $filename)) {
                 $stored_file = $fs->create_file_from_storedfile($fileinfo, $stored_file);
                 $image = new lightboxgallery_image($stored_file, $gallery, $cm);
+
+                if ($resize > 0) {
+                    $resizeoptions = lightboxgallery_resize_options();
+                    list($width, $height) = explode('x', $resizeoptions[$resize]);
+                    $image->resize_image($width, $height);
+                }
+
                 $image->set_caption($filename);
             }
         }

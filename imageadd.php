@@ -59,7 +59,13 @@ if ($mform->is_cancelled()) {
     }
     $stored_file = reset($files);
 
-    lightboxgallery_add_images($stored_file, $context, $cm, $gallery);
+    if ($gallery->autoresize == AUTO_RESIZE_UPLOAD || $gallery->autoresize == AUTO_RESIZE_BOTH) {
+        $resize = $gallery->resize;
+    } else if (isset($formdata->resize)) {
+        $resize = $formdata->resize;
+    }
+
+    lightboxgallery_add_images($stored_file, $context, $cm, $gallery, $resize);
     redirect($CFG->wwwroot.'/mod/lightboxgallery/view.php?id='.$cm->id);
 
 }
