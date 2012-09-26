@@ -132,7 +132,7 @@ class lightboxgallery_image {
         return $fs->create_file_from_string($fileinfo, $index);
     }
 
-    private function delete_file() {
+    public function delete_file() {
         $this->delete_thumbnail();
         $this->stored_file->delete();
     }
@@ -144,7 +144,10 @@ class lightboxgallery_image {
     }
 
     private function delete_thumbnail() {
-        $this->thumbnail->delete();
+        if (isset($this->thumbnail)) {
+            $this->thumbnail->delete();
+            unset($this->thumbnail);
+        }
     }
 
     public function flip_image($direction) {
