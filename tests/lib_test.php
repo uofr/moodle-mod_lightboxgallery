@@ -37,7 +37,7 @@ require_once($CFG->dirroot . '/mod/lightboxgallery/lib.php');
  */
 class mod_lightboxgallery_lib_testcase extends basic_testcase {
     public function test_lightboxgallery_resize_text() {
-        $this->assertEquals(lightboxgallery_resize_text('test123', 10), 'test123');
-        $this->assertEquals(lightboxgallery_resize_text('test1234567', 10), 'test123456...');
+        $this->assertEquals('test123', lightboxgallery_resize_text('test123', 10));
+        $this->assertEquals('test123456...', lightboxgallery_resize_text('test1234567', 10));
     }
 }
