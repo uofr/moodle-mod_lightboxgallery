@@ -63,6 +63,8 @@ if ($mform->is_cancelled()) {
         $resize = $gallery->resize;
     } else if (isset($formdata->resize)) {
         $resize = $formdata->resize;
+    } else {
+        $resize = 0; // No resize.
     }
 
     lightboxgallery_add_images($stored_file, $context, $cm, $gallery, $resize);
