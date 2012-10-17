@@ -28,6 +28,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once(dirname(__FILE__).'/lib.php');
 require_once("$CFG->libdir/filelib.php");
 
 define('THUMB_WIDTH', 150);
