@@ -167,10 +167,6 @@ function lightboxgallery_print_tags($heading, $tags, $courseid, $galleryid) {
     echo $OUTPUT->box_end();
 }
 
-function lightboxgallery_resize_label($label) {
-    return lightboxgallery_resize_text($label, MAX_IMAGE_LABEL);
-}
-
 function lightboxgallery_resize_options() {
     return array(1 => '1280x1024', 2 => '1024x768', 3 => '800x600', 4 => '640x480');
 }

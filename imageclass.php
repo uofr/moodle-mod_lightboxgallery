@@ -206,7 +206,7 @@ class lightboxgallery_image {
         if ($this->gallery->captionfull) {
             $caption = $this->get_image_caption();
         } else {
-            $caption = lightboxgallery_resize_label($this->get_image_caption());
+            $caption = lightboxgallery_resize_text($this->get_image_caption(), MAX_IMAGE_LABEL);
         }
         $timemodified = strftime(get_string('strftimedatetimeshort', 'langconfig'), $this->stored_file->get_timemodified());
         $filesize = round($this->stored_file->get_filesize() / 100) / 10;
