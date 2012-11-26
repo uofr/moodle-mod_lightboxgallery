@@ -22,16 +22,42 @@ class edit_tag extends edit_base {
     }
 
     public function output() {
-        global $CFG;
+        global $CFG, $OUTPUT;
+
+        $stradd = get_string('add');
 
         $fs = get_file_storage();
         $stored_file = $fs->get_file($this->context->id, 'mod_lightboxgallery', 'gallery_images', '0', '/', $this->image);
         $image = new lightboxgallery_image($stored_file, $this->gallery, $this->cm);
 
-        $manualform = '<input type="text" name="tag" /><input type="submit" value="'.get_string('add').'" />';
+        $manualform = '<input type="text" name="tag" /><input type="submit" value="'.$stradd.'" />';
         $manualform = $this->enclose_in_form($manualform);
 
+        $iptcform = '';
         $deleteform = '';
+
+        $path = $stored_file->copy_content_to_temp();
+        $tags = $image->get_tags();
+
+        $size = getimagesize($path, $info);
+        if (isset($info['APP13'])) {
+            $iptc = iptcparse($info['APP13']);
+            if (isset($iptc['2#025'])) {
+                $iptcform = '<input type="hidden" name="iptc" value="1" />';
+                sort($iptc['2#025']);
+                foreach ($iptc['2#025'] as $tag) {
+                    $tag = strtolower($tag);
+                    $exists = ($tags && in_array($tag, array_values($tags)));
+                    $tag = htmlentities($tag);
+                    $iptcform .= '<label ' . ($exists ? 'class="tag-exists"' : '') . '><input type="checkbox" name="iptctags[]" value="' . $tag . '" />' . $tag . '</label><br />';
+                }
+                $iptcform .= '<input type="submit" value="' . $stradd . '" />';
+                $iptcform = '<span class="tag-head"> ' . get_string('tagsiptc', 'lightboxgallery') . '</span>' . $this->enclose_in_form($iptcform);
+            }
+        }
+
+        $iptcaddurl = new moodle_url('/mod/lightboxgallery/edit/tag/import.php', array('id' => $this->gallery->id));
+        $iptcform .= $OUTPUT->single_button($iptcaddurl, get_string('tagsimport', 'lightboxgallery'));
 
         if ($tags = $image->get_tags()) {
             $deleteform = '<input type="hidden" name="delete" value="1" />';
@@ -44,7 +70,7 @@ class edit_tag extends edit_base {
                           .$this->enclose_in_form($deleteform);
         }
 
-        return $manualform . $deleteform;
+        return $manualform . $iptcform . $deleteform;
     }
 
     public function process_form() {

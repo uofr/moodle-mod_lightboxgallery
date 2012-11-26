@@ -135,7 +135,7 @@ function lightboxgallery_print_tags($heading, $tags, $courseid, $galleryid) {
 
     $tagarray = array();
     foreach ($tags as $tag) {
-        $tagparams = array('id' => $courseid, 'gallery' => $galleryid, 'search' => urlencode(stripslashes($tag->description)));
+        $tagparams = array('id' => $courseid, 'gallery' => $galleryid, 'search' => stripslashes($tag->description));
         $tagurl = new moodle_url('/mod/lightboxgallery/search.php', $tagparams);
         $tagarray[] = html_writer::link($tagurl, s($tag->description), array('class' => 'taglink'));
     }
