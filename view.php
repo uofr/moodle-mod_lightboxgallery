@@ -131,8 +131,12 @@ echo $OUTPUT->heading($heading);
 if ($gallery->intro && !$editing) {
     echo $OUTPUT->box(format_module_intro('lightboxgallery', $gallery, $cm->id), 'generalbox', 'intro');
 }
-
-echo $OUTPUT->box_start('generalbox lightbox-gallery clearfix');
+if($gallery->autoresize == AUTO_RESIZE_SCREEN || $gallery->autoresize == AUTO_RESIZE_BOTH){
+    $resizecss = ' autoresize';
+} else {
+    $resizecss = '';
+}
+echo $OUTPUT->box_start('generalbox lightbox-gallery clearfix'.$resizecss);
 
 $fs = get_file_storage();
 $stored_files = $fs->get_area_files($context->id, 'mod_lightboxgallery', 'gallery_images');
