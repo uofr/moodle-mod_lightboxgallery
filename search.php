@@ -65,7 +65,6 @@ $PAGE->requires->js('/mod/lightboxgallery/module.js');
 echo $OUTPUT->header();
 
 if ($instances = get_all_instances_in_course('lightboxgallery', $course)) {
-    $options = array(0 => get_string('all'));
     foreach ($instances as $instance) {
         $options[$instance->id] = $instance->name;
     }
