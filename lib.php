@@ -231,7 +231,7 @@ function lightboxgallery_get_recent_mod_activity(&$activities, &$index, $timesta
 
     if ($comments = $DB->get_records_sql($sql)) {
         foreach ($comments as $comment) {
-            $display = lightboxgallery_resize_text(trim(strip_tags($comment->comment)), MAX_COMMENT_PREVIEW);
+            $display = lightboxgallery_resize_text(trim(strip_tags($comment->commenttext)), MAX_COMMENT_PREVIEW);
 
             $activity = new object();
 
@@ -305,7 +305,7 @@ function lightboxgallery_print_recent_activity($course, $viewfullnames, $timesta
         echo '<ul class="unlist">';
 
         foreach ($comments as $comment) {
-            $display = lightboxgallery_resize_text(trim(strip_tags($comment->comment)), MAX_COMMENT_PREVIEW);
+            $display = lightboxgallery_resize_text(trim(strip_tags($comment->commenttext)), MAX_COMMENT_PREVIEW);
 
             $output = '<li>'.
                  ' <div class="head">'.
@@ -476,7 +476,7 @@ function lightboxgallery_print_comment($comment, $context) {
          '<tr><td class="left side">'.
     // TODO: user_group picture?
          '</td><td class="content" align="left">'.
-         format_text($comment->comment, FORMAT_MOODLE).
+         format_text($comment->commenttext, FORMAT_MOODLE).
          '<div class="commands">'.
          (has_capability('mod/lightboxgallery:edit', $context) ? html_writer::link($deleteurl, get_string('delete')) : '').
          '</div>'.
