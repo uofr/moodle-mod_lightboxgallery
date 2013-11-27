@@ -1,5 +1,14 @@
 .lightbox-gallery {
+    margin-bottom: 1em;
+}
 
+.lbg-left {
+    float: left;
+    margin-right: 1em;
+}
+.lbg-right {
+    float: right;
+    margin-left: 1em;
 }
 
 .lightbox-gallery .lightbox-gallery-image-container {
@@ -35,8 +44,14 @@
 
 .lightbox-gallery .lightbox-gallery-image-thumbnail {
 	display:	block;
-	margin:		5px 5px 2px;
+/*	margin:		5px 5px 2px; */
 	vertical-align:	middle;
+/*        width:         95%; */
+}
+
+
+.lightbox-gallery .lightbox-gallery-image-frame .lightbox-gallery-image-thumbnail {
+    	margin:		5px 5px 2px;
         width:         95%;
 }
 
@@ -50,11 +65,16 @@
 }
 
 .lightbox-gallery .lightbox-gallery-image-caption {
-    font-weight: bold;
+/*    font-weight: bold;    */
     word-wrap: break-word;
 }
 
-.lightbox-gallery .lightbox-gallery-image-caption.top {
+
+.lightbox-gallery .lightbox-gallery-image-frame .lightbox-gallery-image-caption {
+    font-weight: bold;
+}
+
+.lightbox-gallery .lightbox-gallery-image-frame .lightbox-gallery-image-caption.top {
     margin-bottom: -3px;
 }
 
