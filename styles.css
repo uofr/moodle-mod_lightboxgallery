@@ -10,6 +10,10 @@
     float: right;
     margin-left: 1em;
 }
+.lbg-center {
+    margin-left: auto;
+    margin-right: auto;
+}
 
 .lightbox-gallery .lightbox-gallery-image-container,
 .lightbox-gallery .lbg-image-container {
@@ -88,7 +92,9 @@
 
 
 
-
+.lbg_commandbox {
+    margin-bottom: 1.5em;
+}
 
 #mod-lightboxgallery-view .generalbox,
 #mod-lightboxgallery-search .generalbox {
