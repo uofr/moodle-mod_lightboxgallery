@@ -128,6 +128,42 @@ function lightboxgallery_delete_instance($id) {
     return true;
 }
 
+
+function lightboxgallery_reset_userdata($data) {
+    global $CFG,$DB;
+
+    $componentstr = get_string('modulenameplural', 'lightboxgallery');
+    $status = array();
+
+    //get the lightboxgalleries in this course.
+    if (!$lbgs = $DB->get_records('lightboxgallery', array('course' => $data->courseid))) {
+        return false;
+    }
+    $errors = false;
+    foreach ($lbgs as $lbg) {
+
+        // remove all comments
+        if (!empty($data->reset_lightboxgallery_comments)) {
+            $DB->delete_records_select('lightboxgallery_comments', "gallery = ?", array($lbg->id));
+            $status[] = array('component'=>$componentstr, 'item'=>get_string('deleteallcomments'), 'error'=>false);
+        }
+        
+        //perhaps someday
+        //if (!empty($data->reset_lightboxgallery_images)) {
+        //}
+    }
+    return $status;
+}
+
+
+function lightboxgallery_reset_course_form_definition(&$mform) {
+    $mform->addElement('header', 'lightboxgalleryheader', get_string('modulenameplural', 'lightboxgallery'));
+    $mform->addElement('advcheckbox', 'reset_lightboxgallery_comments', get_string('deleteallcomments'));
+    //$mform->addElement('advcheckbox', 'reset_lightboxgallery_images', get_string('removeallimages', 'lightboxgallery'));
+}
+
+
+
 /**
  * Return a small object with summary information about what a
  * user has done with a given particular instance of this module
@@ -191,8 +227,10 @@ function lightboxgallery_user_complete($course, $user, $mod, $resource) {
         if ($comments = $DB->get_records_sql($sql, $params)) {
             $cm = get_coursemodule_from_id('lightboxgallery', $mod->id);
             $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+            $first_comment = 1;
             foreach ($comments as $comment) {
-                lightboxgallery_print_comment($comment, $context);
+                lightboxgallery_print_comment($comment, $context, $first_comment);
+                $first_comment = 0;
             }
         }
     } else {
@@ -458,8 +496,9 @@ function lightboxgallery_resize_text($text, $length) {
  * Output the HTML for a comment in the given context.
  * @param object $comment The comment record to output
  * @param object $context The context from which this is being displayed
+ * @param object $first_comment Is this the first comment being displayed
  */
-function lightboxgallery_print_comment($comment, $context) {
+function lightboxgallery_print_comment($comment, $context, $first_comment = 0) {
     global $DB, $CFG, $COURSE, $OUTPUT;
 
     //TODO: Move to renderer!
@@ -467,21 +506,41 @@ function lightboxgallery_print_comment($comment, $context) {
     $user = $DB->get_record('user', array('id' => $comment->userid));
 
     $deleteurl = new moodle_url('/mod/lightboxgallery/comment.php', array('id' => $comment->gallery, 'delete' => $comment->id));
-
-    echo '<table cellspacing="0" width="50%" class="boxaligncenter datacomment forumpost">'.
-         '<tr class="header"><td class="picture left">'.$OUTPUT->user_picture($user, array('courseid' => $COURSE->id)).'</td>'.
-         '<td class="topic starter" align="left"><a name="c'.$comment->id.'"></a><div class="author">'.
+    
+    $is_first = ($first_comment) ? 'firstpost starter ' : '';
+    
+    echo '<div class="forumpost '.$is_first.'clearfix">'.
+         '<div class="row header clearfix"><div class="left picture">'.$OUTPUT->user_picture($user, array('courseid' => $COURSE->id)).'</div>'.
+         '<div class="topic"><a name="c'.$comment->id.'"></a><div class="author">'.
          '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$user->id.'&amp;course='.$COURSE->id.'">'.
          fullname($user, has_capability('moodle/site:viewfullnames', $context)).'</a> - '.userdate($comment->timemodified).
-         '</div></td></tr>'.
-         '<tr><td class="left side">'.
+         '</div></div></div>'.
+         '<div class="row maincontent clearfix">'.
     // TODO: user_group picture?
-         '</td><td class="content" align="left">'.
+         '<div class="left"><div class="grouppictures">&nbsp;</div></div><div class="no-overflow"><div class="content"><div class="posting fullpost">'.
          format_text($comment->commenttext, FORMAT_MOODLE).
-         '<div class="commands">'.
+         '</div></div></div></div><div class="row side"><div class="left">&nbsp;</div><div class="options clearfix"><div class="commands">'.
          (has_capability('mod/lightboxgallery:edit', $context) ? html_writer::link($deleteurl, get_string('delete')) : '').
          '</div>'.
-         '</td></tr></table>';
+         '</div></div></div>';
+         
+         /*
+         echo '<table cellspacing="0" width="50%" class="boxaligncenter datacomment forumpost">'.
+              '<tr class="header"><td class="picture left">'.$OUTPUT->user_picture($user, array('courseid' => $COURSE->id)).'</td>'.
+              '<td class="topic starter" align="left"><a name="c'.$comment->id.'"></a><div class="author">'.
+              '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$user->id.'&amp;course='.$COURSE->id.'">'.
+              fullname($user, has_capability('moodle/site:viewfullnames', $context)).'</a> - '.userdate($comment->timemodified).
+              '</div></td></tr>'.
+              '<tr><td class="left side">'.
+         */
+         // TODO: user_group picture?
+         /*     '</td><td class="content" align="left">'.
+              format_text($comment->commenttext, FORMAT_MOODLE).
+              '<div class="commands">'.
+              (has_capability('mod/lightboxgallery:edit', $context) ? html_writer::link($deleteurl, get_string('delete')) : '').
+              '</div>'.
+              '</td></tr></table>';
+        */
 }
 
 /**

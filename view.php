@@ -190,13 +190,15 @@ if ($gallery->comments && has_capability('mod/lightboxgallery:addcomment', $cont
 }
 
 if (count($options) > 0) {
-    echo $OUTPUT->box(implode(' | ', $options), 'center');
+    echo $OUTPUT->box(implode(' | ', $options), 'center lbg_commandbox');
 }
 
 if (!$editing && $gallery->comments && has_capability('mod/lightboxgallery:viewcomments', $context)) {
     if ($comments = $DB->get_records('lightboxgallery_comments', array('gallery' => $gallery->id), 'timemodified ASC')) {
+        $first_comment = 1;
         foreach ($comments as $comment) {
-            lightboxgallery_print_comment($comment, $context);
+            lightboxgallery_print_comment($comment, $context, $first_comment);
+            $first_comment = 0;
         }
     }
 }

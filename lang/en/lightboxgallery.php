@@ -119,6 +119,7 @@ $string['position_bottom'] = 'Bottom';
 $string['position_top'] = 'Top';
 $string['pluginadministration'] = 'Lightbox Gallery administration';
 $string['pluginname'] = 'Lightbox Gallery';
+$string['removeallimages'] = 'Remove all images';
 $string['resizeto'] = 'Resize to';
 $string['rsssubscribe'] = 'Gallery RSS feed';
 $string['saveimage'] = 'Save {$a}';
