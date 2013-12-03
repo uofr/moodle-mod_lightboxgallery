@@ -1,5 +1,21 @@
 .lightbox-gallery {
     margin-bottom: 1em;
+    width: 200px;
+}
+
+.lightbox-gallery.autowidth {
+    width: auto;
+}
+
+#page-mod-lightboxgallery-view .lightbox-gallery {
+    width: auto;
+}
+
+
+
+.lightbox-gallery .lightbox-gallery-image-container,
+.lightbox-gallery .lbg-image-container {
+	float:		left;
 }
 
 .lbg-left {
@@ -10,14 +26,11 @@
     float: right;
     margin-left: 1em;
 }
-.lbg-center {
+.lbg-center,
+.lbg-centre {
     margin-left: auto;
     margin-right: auto;
-}
-
-.lightbox-gallery .lightbox-gallery-image-container,
-.lightbox-gallery .lbg-image-container {
-	float:		left;
+    clear: both;
 }
 
 .lightbox-gallery .lightbox-gallery-image-frame,
@@ -28,6 +41,12 @@
 	margin:		10px auto;
 	text-align:	center;
         width:          172px;
+}
+
+.lightbox-gallery .lightbox-gallery-image-frame.shadow,
+.lightbox-gallery .lbg-image-frame.shadow,
+.lightbox-gallery .lightbox-gallery-image-container .lightbox-gallery-image-frame.hover:hover,
+.lightbox-gallery .lbg-image-container .lbg-image-frame.hover:hover {
 	-moz-box-shadow: 3px 3px 4px #777;
 	-webkit-box-shadow: 3px 3px 4px #777;
 	box-shadow: 3px 3px 4px #777;
@@ -37,8 +56,8 @@
 	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#777777');
 }
 
-.lightbox-gallery .lightbox-gallery-image-container .lightbox-gallery-image-frame:hover,
-.lightbox-gallery .lbg-image-container .lbg-image-frame:hover {
+.lightbox-gallery .lightbox-gallery-image-container .lightbox-gallery-image-frame.shadow:hover,
+.lightbox-gallery .lbg-image-container .lbg-image-frame.shadow:hover {
 	text-decoration:none;
         -moz-box-shadow: 3px 3px 4px #333;
         -webkit-box-shadow: 3px 3px 4px #333;
