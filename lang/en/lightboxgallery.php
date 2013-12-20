@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['acceptablefiletypebriefing'] = 'To upload multiple images, submit a <b>.zip</b> archive containing the files. All images found inside the zip will be added to the gallery.';
+$string['acceptablefiletypebriefing'] = 'To upload multiple images, submit a <b>.zip</b> archive containing the files. All images found within the zip will be added to the gallery.';
 $string['addcomment'] = 'Add comment';
 $string['addimage'] = 'Add images';
 $string['addimage_help'] = 'Browse for an image on your local machine to add to the current gallery.
