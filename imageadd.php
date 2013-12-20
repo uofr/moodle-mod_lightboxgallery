@@ -73,7 +73,7 @@ if ($mform->is_cancelled()) {
 }
 
 echo $OUTPUT->header();
-echo $OUTPUT->box($OUTPUT->notification(get_string('acceptablefiletypebriefing', 'mod_lightboxgallery')));
+echo $OUTPUT->box($OUTPUT->notification(get_string('acceptablefiletypebriefing', 'mod_lightboxgallery'),'notifynotice'));
 
 $mform->display();
 
