@@ -113,7 +113,7 @@ function lightboxgallery_delete_instance($id) {
     }
 
     $cm = get_coursemodule_from_instance('lightboxgallery', $gallery->id);
-    $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+    $context = context_module::instance($cm->id);
     // Files.
     $fs = get_file_storage();
     $fs->delete_area_files($context->id, 'mod_lightboxgallery');
@@ -190,7 +190,7 @@ function lightboxgallery_user_complete($course, $user, $mod, $resource) {
         $params = array('mod' => $mod->instance, 'userid' => $user->id);
         if ($comments = $DB->get_records_sql($sql, $params)) {
             $cm = get_coursemodule_from_id('lightboxgallery', $mod->id);
-            $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+            $context = context_module::instance($cm->id);
             foreach ($comments as $comment) {
                 lightboxgallery_print_comment($comment, $context);
             }
