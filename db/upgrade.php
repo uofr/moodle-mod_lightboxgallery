@@ -206,8 +206,8 @@ function xmldb_lightboxgallery_upgrade($oldversion=0) {
                 if (!$cm = get_coursemodule_from_instance('lightboxgallery', $gallery->id, $gallery->course, false)) {
                     continue;
                 }
-                $context = get_context_instance(CONTEXT_MODULE, $cm->id);
-                $coursecontext = get_context_instance(CONTEXT_COURSE, $gallery->course);
+                $context = context_module::instance($cm->id);
+                $coursecontext = context_course::instance($gallery->course);
 
                 // Add files to lightbox area, iterate over the legacy files.
                 $fs = get_file_storage();

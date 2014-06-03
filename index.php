@@ -65,7 +65,7 @@ $prevsection = '';
 
 // TODO: Put this in a renderer.
 foreach ($galleries as $gallery) {
-    $cm = get_context_instance(CONTEXT_MODULE, $gallery->coursemodule);
+    $cm = context_module::instance($gallery->coursemodule);
 
     $printsection = ($gallery->section !== $prevsection ? true : false);
     if ($printsection) {

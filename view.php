@@ -71,7 +71,7 @@ if ($gallery->ispublic) {
     $userid = $USER->id;
 }
 
-$context = get_context_instance(CONTEXT_MODULE, $cm->id);
+$context = context_module::instance($cm->id);
 
 if ($editing) {
     require_capability('mod/lightboxgallery:edit', $context);
