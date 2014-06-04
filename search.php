@@ -67,8 +67,7 @@ $PAGE->set_url('/mod/lightboxgallery/search.php', array('id' => $cm->id, 'search
 $PAGE->set_title($gallery->name);
 $PAGE->set_heading($course->shortname);
 $PAGE->requires->css('/mod/lightboxgallery/assets/skins/sam/gallery-lightbox-skin.css');
-$PAGE->requires->js('/mod/lightboxgallery/gallery-lightbox-min.js');
-$PAGE->requires->js('/mod/lightboxgallery/module.js');
+$PAGE->requires->yui_module('moodle-mod_lightboxgallery-lightbox', 'M.mod_lightboxgallery.init');
 
 echo $OUTPUT->header();
 
@@ -102,7 +101,7 @@ $sql = "SELECT *
         FROM {lightboxgallery_image_meta}
         WHERE ".$DB->sql_like('description', '?', false)." AND gallery $insql";
 if ($results = $DB->get_records_sql($sql, $params)) {
-    echo $OUTPUT->box_start('generalbox lightbox-gallery clearfix');
+    echo $OUTPUT->box_start('generalbox lightbox-gallery clearfix autoresize');
 
     $hashes = array();
     $galleryrecords = array();
