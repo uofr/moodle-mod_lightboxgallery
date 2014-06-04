@@ -29,4 +29,5 @@ $plugin->requires = 2014050800;  // Requires this Moodle version.
 $plugin->cron     = 0;           // Period for cron to check this plugin (secs).
 
 $plugin->component = 'mod_lightboxgallery';
-$plugin->maturity = MATURITY_STABLE;
+$plugin->maturity = MATURITY_RC;
+$plugin->release = '2.7.1.0';
