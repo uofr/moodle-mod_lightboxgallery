@@ -111,9 +111,7 @@ if (has_capability('mod/lightboxgallery:edit', $context)) {
 $button .= update_module_button($cm->id, $course->id, get_string('modulename', 'lightboxgallery'));
 $PAGE->set_button($button);
 $PAGE->requires->css('/mod/lightboxgallery/assets/skins/sam/gallery-lightbox-skin.css');
-//$PAGE->requires->js('/mod/lightboxgallery/gallery-lightbox-min.js');
-//$PAGE->requires->js('/mod/lightboxgallery/module.js');
-$PAGE->requires->yui_module('moodle-mod_lightboxgallery-lightbox','M.mod_lightboxgallery.init');
+$PAGE->requires->yui_module('moodle-mod_lightboxgallery-lightbox', 'M.mod_lightboxgallery.init');
 
 $allowrssfeed = (lightboxgallery_rss_enabled() && $gallery->rss);
 $heading = get_string('displayinggallery', 'lightboxgallery', $gallery->name);
