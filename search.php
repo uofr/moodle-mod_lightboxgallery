@@ -51,11 +51,20 @@ if (isset($gallery) && $gallery->ispublic) {
     $userid = $USER->id;
 }
 
-add_to_log($course->id, 'lightboxgallery', 'search', 'search.php?id='.$cid.'&gallery='.$g.'&search='.$search, $search, 0, $userid);
+$context = context_module::instance($cm->id);
 
-$PAGE->set_url('/mod/lightboxgallery/search.php', array('id' => $course->id, 'search' => $search));
-$title = $g ? $gallery->name : get_string('pluginname', 'lightboxgallery');
-$PAGE->set_title($title);
+$params = array(
+    'context' => $context,
+    'other' => array(
+        'searchterm' => $search,
+        'lightboxgalleryid' => $gallery->id,
+    ),
+);
+$event = \mod_lightboxgallery\event\gallery_searched::create($params);
+$event->trigger();
+
+$PAGE->set_url('/mod/lightboxgallery/search.php', array('id' => $cm->id, 'search' => $search));
+$PAGE->set_title($gallery->name);
 $PAGE->set_heading($course->shortname);
 $PAGE->requires->css('/mod/lightboxgallery/assets/skins/sam/gallery-lightbox-skin.css');
 $PAGE->requires->js('/mod/lightboxgallery/gallery-lightbox-min.js');

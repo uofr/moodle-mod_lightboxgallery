@@ -29,12 +29,15 @@ require_once($CFG->libdir.'/rsslib.php');
 
 $id = required_param('id', PARAM_INT);
 
-if (! $course = $DB->get_record('course', array('id' => $id))) {
-    print_error('invalidcourseid');
-}
-
+$course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
+$context = context_course::instance($course->id);
 require_course_login($course);
-add_to_log($course->id, 'lightboxgallery', 'view all', 'index.php?id='.$course->id, '');
+
+$event = \mod_lightboxgallery\event\course_module_instance_list_viewed::create(array(
+    'context' => $context
+));
+$event->add_record_snapshot('course', $course);
+$event->trigger();
 
 $PAGE->set_url('/mod/lightboxgallery/view.php', array('id' => $id));
 $PAGE->set_title($course->fullname);

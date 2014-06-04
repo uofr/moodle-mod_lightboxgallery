@@ -83,7 +83,15 @@ if ($mform->is_cancelled()) {
     $newcomment->commenttext = $formadata->comment['text'];
     $newcomment->timemodified = time();
     if ($DB->insert_record('lightboxgallery_comments', $newcomment)) {
-        add_to_log($course->id, 'lightboxgallery', 'comment', 'view.php?id='.$cm->id, $gallery->id, $cm->id, $USER->id);
+        $params = array(
+            'context' => $context,
+            'other' => array(
+                'lightboxgalleryid' => $gallery->id,
+            ),
+        );
+        $event = \mod_lightboxgallery\event\gallery_comment_created::create($params);
+        $event->trigger();
+
         redirect($galleryurl, get_string('commentadded', 'lightboxgallery'));
     } else {
         print_error('Comment creation failed');

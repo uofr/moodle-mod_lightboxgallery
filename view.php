@@ -83,7 +83,15 @@ if (empty($cm->visible) and !has_capability('moodle/course:viewhiddenactivities'
 
 lightboxgallery_config_defaults();
 
-add_to_log($course->id, 'lightboxgallery', 'view', 'view.php?id='.$cm->id.'&page='.$page, $gallery->id, $cm->id, $userid);
+$params = array(
+    'context' => $context,
+    'objectid' => $gallery->id
+);
+$event = \mod_lightboxgallery\event\course_module_viewed::create($params);
+$event->add_record_snapshot('course_modules', $cm);
+$event->add_record_snapshot('course', $course);
+$event->add_record_snapshot('lightboxgallery', $gallery);
+$event->trigger();
 
 // Mark viewed
 $completion = new completion_info($course);
