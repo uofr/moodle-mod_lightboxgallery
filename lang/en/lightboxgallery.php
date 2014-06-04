@@ -118,6 +118,7 @@ $string['modulenameplural'] = 'Lightbox Galleries';
 $string['modulenameshort'] = 'Gallery';
 $string['modulenameadd'] = 'Lightbox gallery';
 $string['newgallerycomments'] = 'New gallery comments';
+$string['nocomments'] = 'No comments';
 $string['norssfeedavailable'] = 'Feed not available';
 $string['position_bottom'] = 'Bottom';
 $string['position_top'] = 'Top';
