@@ -81,6 +81,7 @@ foreach ($galleries as $gallery) {
 
     $fs = get_file_storage();
     $files = $fs->get_area_files($cm->id, 'mod_lightboxgallery', 'gallery_images');
+    $imagecount = 0;
     foreach ($files as $file) {
         if ($file->get_filename() != '.') {
             $imagecount++;
@@ -92,9 +93,9 @@ foreach ($galleries as $gallery) {
     $table->data[] = array(($printsection ? $gallery->section : ''),
                            lightboxgallery_index_thumbnail($course->id, $gallery),
                            html_writer::link($viewurl, $gallery->name).
-                           '<br />'.get_string('imagecounta', 'lightboxgallery', $imagecount).
+                           '<br />'.get_string('imagecounta', 'lightboxgallery', $imagecount).' '.
                            get_string('commentcount', 'lightboxgallery', $commentcount),
-                           format_text($gallery->description, FORMAT_MOODLE, $fobj),
+                           format_text($gallery->intro, FORMAT_MOODLE, $fobj),
                            (isset($rss) ? $rss : get_string('norssfeedavailable', 'lightboxgallery')));
 
     $prevsection = $gallery->section;

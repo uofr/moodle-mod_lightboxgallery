@@ -218,11 +218,13 @@ function lightboxgallery_get_recent_mod_activity(&$activities, &$index, $timesta
         $course = $DB->get_record('course', array('id' => $courseid));
     }
 
-    $modinfo =& get_fast_modinfo($course);
+    $modinfo = get_fast_modinfo($course);
 
     $cm = $modinfo->cms[$cmid];
 
-    $sql = "SELECT c.*, l.name, u.firstname, u.lastname, u.picture
+    $userfields = user_picture::fields('u', null, 'userid');
+    $userfieldsnoalias = user_picture::fields();
+    $sql = "SELECT c.*, l.name, $userfields
               FROM {lightboxgallery_comments} c
                    JOIN {lightboxgallery} l ON l.id = c.gallery
                    JOIN {user}            u ON u.id = c.userid
@@ -246,11 +248,16 @@ function lightboxgallery_get_recent_mod_activity(&$activities, &$index, $timesta
             $activity->content->id      = $comment->id;
             $activity->content->comment = $display;
 
-            $activity->user = new object();
-            $activity->user->id        = $comment->userid;
-            $activity->user->firstname = $comment->firstname;
-            $activity->user->lastname  = $comment->lastname;
-            $activity->user->picture   = $comment->picture;
+            $activity->user = new stdClass();
+            $activity->user->id = $comment->userid;
+
+            $fields = explode(',', $userfieldsnoalias);
+            foreach ($fields as $field) {
+                if ($field == 'id') {
+                    continue;
+                }
+                $activity->user->$field = $comment->$field;
+            }
 
             $activities[$index++] = $activity;
 
@@ -293,7 +300,8 @@ function lightboxgallery_print_recent_mod_activity($activity, $courseid, $detail
 function lightboxgallery_print_recent_activity($course, $viewfullnames, $timestart) {
     global $DB, $CFG, $OUTPUT;
 
-    $sql = "SELECT c.*, l.name, u.firstname, u.lastname
+    $userfields = get_all_user_name_fields(true, 'u');
+    $sql = "SELECT c.*, l.name, $userfields
               FROM {lightboxgallery_comments} c
                    JOIN {lightboxgallery} l ON l.id = c.gallery
                    JOIN {user}            u ON u.id = c.userid
