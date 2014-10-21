@@ -71,7 +71,7 @@ if ($gallery->ispublic) {
     $userid = $USER->id;
 }
 
-$context = get_context_instance(CONTEXT_MODULE, $cm->id);
+$context = context_module::instance($cm->id);
 
 if ($editing) {
     require_capability('mod/lightboxgallery:edit', $context);
@@ -157,7 +157,7 @@ echo $OUTPUT->box_end();
 
 if ($gallery->perpage) {
     $barurl = $CFG->wwwroot.'/mod/lightboxgallery/view.php?id='.$cm->id.'&amp;' . ($editing ? 'editing=1&amp;' : '');
-    $pagingbar = new paging_bar($image_count, $page, $gallery->perpage, $barurl);
+    $pagingbar = new paging_bar($image_count - 1, $page, $gallery->perpage, $barurl);
     echo $OUTPUT->render($pagingbar);
 }
 

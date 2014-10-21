@@ -41,7 +41,7 @@ $gallery = $DB->get_record('lightboxgallery', array('id' => $cm->instance), '*',
 
 require_login($course->id);
 
-$context = get_context_instance(CONTEXT_MODULE, $cm->id);
+$context = context_module::instance($cm->id);
 require_capability('mod/lightboxgallery:edit', $context);
 
 $PAGE->set_cm($cm);
