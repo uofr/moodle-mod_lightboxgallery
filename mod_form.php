@@ -96,12 +96,9 @@ class mod_lightboxgallery_mod_form extends moodleform_mod {
         $mform->setType('comments', PARAM_INTEGER);
         $mform->setAdvanced('comments');
         
-        // hack: cunnintr - hiding this option as it won't be relevant
-        //$mform->addElement('select', 'ispublic', get_string('makepublic', 'lightboxgallery'), $yesno);
-        //$mform->setType('ispublic', PARAM_INTEGER);
-        //$mform->setAdvanced('ispublic');
-        $mform->addElement('hidden', 'ispublic', 'no');
-        
+        $mform->addElement('select', 'ispublic', get_string('makepublic', 'lightboxgallery'), $yesno);
+        $mform->setType('ispublic', PARAM_INTEGER);
+        $mform->setAdvanced('ispublic');
         
         if (lightboxgallery_rss_enabled()) {
             $mform->addElement('select', 'rss', get_string('allowrss', 'lightboxgallery'), $yesno);
