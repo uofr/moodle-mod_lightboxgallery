@@ -362,13 +362,15 @@ YUI.add('moodle-mod_lightboxgallery-lightbox', function(Y) {
 
 			var imageArray = [],
 				imageNum = 0;
-
-			if (selectedLink.get("rel") === LIGHTBOX) {
+            
+            //console.log('rel:'+selectedLink.get("rel"));
+			
+            if (selectedLink.get("rel") === LIGHTBOX) {
 				// If image is NOT part of a set, add single image to imageArray
 				imageArray.push([selectedLink.get("href"), selectedLink.get("title")]);
 			} else {
 				// If image is part of a set...
-                targetstring = '.lightbox-gallery a[href][rel="lightbox_gallery"]';
+                targetstring = '.lightbox-gallery a[href][rel="'+selectedLink.get("rel")+'"]';
 				Y.all(targetstring).each(function () {
 					imageArray.push([this.get("href"), this.get("title")]);
 				});
@@ -426,7 +428,7 @@ YUI.add('moodle-mod_lightboxgallery-lightbox', function(Y) {
 			Y.delegate(CLICK, Y.bind(function (evt) {
 				evt.halt();
 				this.start(evt.currentTarget);
-			}, this), Y.one(".lightbox-gallery"), this.get("selector"));
+			}, this), document.body, this.get("selector"));
 		},
 
 		/**
@@ -464,7 +466,14 @@ YUI.add('moodle-mod_lightboxgallery-lightbox', function(Y) {
                 // Get current viewport width and height
                 viewportWidth = Y.DOM.winWidth();
                 viewportHeight = Y.DOM.winHeight();
-                imageresize = Y.one('#region-main .autoresize');
+                
+                lw = imagePreloader.width;
+                lh = imagePreloader.height;
+                
+                if (lw > viewportWidth) { lw = viewportWidth; lh = Math.round((imagePreloader.height * lw)/imagePreloader.width); lw = lw-(this.get("borderWidth")*2); lh = lh-(this.get("borderWidth")*2); } else if (lh > viewportHeight) { lh = viewportHeight; lw = Math.round((imagePreloader.width * lh)/imagePreloader.height); lw = lw-(this.get("borderWidth")*2); lh = lh-(this.get("borderWidth")*2); };
+                
+                //imageresize = Y.one('#region-main .autoresize');
+                /*
                 if (imageresize){
                     border = this.get("borderWidth");
                     widthRatio = (viewportWidth-border*6)/imagePreloader.width;
@@ -484,9 +493,10 @@ YUI.add('moodle-mod_lightboxgallery-lightbox', function(Y) {
                     imgWidth = imagePreloader.width;
                     imgHeight = imagePreloader.height;
                 }
+                */
 
-
-				this._resizeImageContainer(imgWidth, imgHeight);
+				//this._resizeImageContainer(imgWidth, imgHeight);
+                this._resizeImageContainer(lw, lh);
 			}, this);
 			imagePreloader.src = this.get(IMAGE_ARRAY)[imageNum][0];
 		},
@@ -569,7 +579,9 @@ YUI.add('moodle-mod_lightboxgallery-lightbox', function(Y) {
 			this.get("loading").hide();
 
 			var lightBoxImage = this.get("lightboxImage");
-
+            
+            if (lightBoxImage.get('width') > Y.DOM.winWidth()) { lightBoxImage.setStyles({width:(Y.DOM.winWidth()-(this.get("borderWidth")*2))+PX,height: 'auto'}); } else if (lightBoxImage.get('height') > Y.DOM.winHeight()) { lightBoxImage.setStyles({height:(Y.DOM.winHeight()-(this.get("borderWidth")*2))+PX,width: 'auto'}); } else { T.setStyles({height:imgHeight+PX,width:imgWidth+PX}); };
+            
 			if (this.get(ANIM)) {
 
 				var startOpacity = lightBoxImage.getStyle("display") === "none" ? 0 : lightBoxImage.getStyle("opacity") || 0,
