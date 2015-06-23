@@ -580,7 +580,13 @@ YUI.add('moodle-mod_lightboxgallery-lightbox', function(Y) {
 
 			var lightBoxImage = this.get("lightboxImage");
             
-            if (lightBoxImage.get('width') > Y.DOM.winWidth()) { lightBoxImage.setStyles({width:(Y.DOM.winWidth()-(this.get("borderWidth")*2))+PX,height: 'auto'}); } else if (lightBoxImage.get('height') > Y.DOM.winHeight()) { lightBoxImage.setStyles({height:(Y.DOM.winHeight()-(this.get("borderWidth")*2))+PX,width: 'auto'}); } else { T.setStyles({height:imgHeight+PX,width:imgWidth+PX}); };
+            if (lightBoxImage.get('width') > Y.DOM.winWidth()) { 
+                lightBoxImage.setStyles({width:(Y.DOM.winWidth()-(this.get("borderWidth")*2))+PX,height: 'auto'}); 
+            } else if (lightBoxImage.get('height') > Y.DOM.winHeight()) { 
+                lightBoxImage.setStyles({height:(Y.DOM.winHeight()-(this.get("borderWidth")*2))+PX,width: 'auto'}); 
+            } else { 
+                lightBoxImage.setStyles({height:imgHeight+PX,width:imgWidth+PX}); 
+            };
             
 			if (this.get(ANIM)) {
 
