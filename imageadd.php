@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
 /**
  * A page for uploading new images
  *
@@ -38,6 +37,7 @@ require_login($course->id);
 $context = context_module::instance($cm->id);
 require_capability('mod/lightboxgallery:addimage', $context);
 
+$PAGE->set_cm($cm);
 $PAGE->set_url('/mod/lightboxgallery/view.php', array('id' => $cm->id));
 $PAGE->set_title($gallery->name);
 $PAGE->set_heading($course->shortname);
@@ -57,7 +57,6 @@ if ($mform->is_cancelled()) {
         context_user::instance($USER->id)->id, 'user', 'draft', $draftid, 'id DESC', false)) {
         redirect($PAGE->url);
     }
-    $stored_file = reset($files);
 
     if ($gallery->autoresize == AUTO_RESIZE_UPLOAD || $gallery->autoresize == AUTO_RESIZE_BOTH) {
         $resize = $gallery->resize;
@@ -67,15 +66,10 @@ if ($mform->is_cancelled()) {
         $resize = 0; // No resize.
     }
 
-    lightboxgallery_add_images($stored_file, $context, $cm, $gallery, $resize);
+    lightboxgallery_add_images($files, $context, $cm, $gallery, $resize);
     redirect($CFG->wwwroot.'/mod/lightboxgallery/view.php?id='.$cm->id);
-
 }
 
 echo $OUTPUT->header();
-echo $OUTPUT->box($OUTPUT->notification(get_string('acceptablefiletypebriefing', 'mod_lightboxgallery')));
-
 $mform->display();
-
 echo $OUTPUT->footer();
-
