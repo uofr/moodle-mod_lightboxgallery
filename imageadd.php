@@ -28,9 +28,8 @@ require_once(dirname(__FILE__).'/imageclass.php');
 
 $id = required_param('id', PARAM_INT);
 
-$cm         = get_coursemodule_from_id('lightboxgallery', $id, 0, false, MUST_EXIST);
-$course     = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
-$gallery    = $DB->get_record('lightboxgallery', array('id' => $cm->instance), '*', MUST_EXIST);
+list($course, $cm) = get_course_and_cm_from_cmid($id, 'lightboxgallery');
+$gallery = $DB->get_record('lightboxgallery', array('id' => $cm->instance), '*', MUST_EXIST);
 
 require_login($course->id);
 
