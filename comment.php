@@ -41,8 +41,7 @@ require_login($course->id);
 $PAGE->set_url('/mod/lightboxgallery/view.php', array('id' => $id));
 $PAGE->set_title($gallery->name);
 $PAGE->set_heading($course->shortname);
-$PAGE->set_button(update_module_button($cm->id, $course->id, get_string('modulename', 'lightboxgallery')));
-
+$PAGE->set_button($OUTPUT->update_module_button($cm->id, 'lightboxgallery'));
 
 $context = context_module::instance($cm->id);
 

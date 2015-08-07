@@ -98,7 +98,7 @@ if (has_capability('mod/lightboxgallery:edit', $context)) {
     $strediting = get_string('turnediting'.($editing ? 'off' : 'on'));
     $button = $OUTPUT->single_button($url, $strediting, 'get').' ';
 }
-$button .= update_module_button($cm->id, $course->id, get_string('modulename', 'lightboxgallery'));
+$button .= $OUTPUT->update_module_button($cm->id, 'lightboxgallery');
 $PAGE->set_button($button);
 $PAGE->requires->css('/mod/lightboxgallery/assets/skins/sam/gallery-lightbox-skin.css');
 $PAGE->requires->yui_module('moodle-mod_lightboxgallery-lightbox', 'M.mod_lightboxgallery.init');
