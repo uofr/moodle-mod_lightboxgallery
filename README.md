@@ -1,4 +1,7 @@
 #Lightbox gallery activity for Moodle 2.7+
+
+[![Build Status](https://travis-ci.org/netspotau/moodle-mod_lightboxgallery.svg?branch=master)](https://travis-ci.org/netspotau/moodle-mod_lightboxgallery)
+
 This resource allows you to create 'Lightbox' enabled image galleries within your Moodle course. The
 Lightbox system is a set of scripts than can be used to apply nice effects to image galleries.
 

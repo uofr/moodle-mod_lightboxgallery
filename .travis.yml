@@ -21,6 +21,7 @@ env:
   - MOODLE_BRANCH=MOODLE_28_STABLE
   - MOODLE_BRANCH=MOODLE_29_STABLE
   - MOODLE_BRANCH=MOODLE_30_STABLE
+  - IGNORE_PATHS=yui/lightbox
  matrix:
   - DB=pgsql
   - DB=mysqli
