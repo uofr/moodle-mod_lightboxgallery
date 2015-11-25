@@ -85,7 +85,7 @@ class mod_lightboxgallery_mod_form extends moodleform_mod {
         $mform->addHelpButton('autoresizegroup', 'autoresize', 'lightboxgallery');
 
         $mform->addElement('select', 'resize', sprintf('%s (%s)', get_string('edit_resize', 'lightboxgallery'),
-                            strtolower(get_string('upload'))), lightboxgallery_resize_options());
+                            core_text::strtolower(get_string('upload'))), lightboxgallery_resize_options());
         $mform->setType('resize', PARAM_INTEGER);
         $mform->disabledIf('resize', 'autoresize', 'eq', 1);
         $mform->disabledIf('resize', 'autoresizedisabled', 'checked');
