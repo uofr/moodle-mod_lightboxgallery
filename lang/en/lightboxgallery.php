@@ -31,7 +31,7 @@ $string['addimage'] = 'Add images';
 $string['addimage_help'] = 'Browse for an image on your local machine to add to the current gallery.
 
 You can also select a zip archive containing multiple images, which will be extracted into the image directory after being uploaded.';
-$string['autoresize'] = 'Automatically resize images';
+$string['autoresize'] = 'Automatically resize';
 $string['autoresize_help'] = 'You can control if and how gallery images are resized. The following methods are available when configuring a gallery:
 
 * Screen: images that are bigger than the users screen will be scaled down to fit inside the screen.
