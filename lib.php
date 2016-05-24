@@ -76,6 +76,8 @@ function lightboxgallery_add_instance($gallery) {
         $gallery->rss = 0;
     }
 
+    lightboxgallery_set_sizing($gallery);
+
     return $DB->insert_record('lightboxgallery', $gallery);
 }
 
@@ -97,12 +99,22 @@ function lightboxgallery_update_instance($gallery) {
         $gallery->rss = 0;
     }
 
+    lightboxgallery_set_sizing($gallery);
+
+    return $DB->update_record('lightboxgallery', $gallery);
+}
+
+/**
+ * Given a gallery object from mod_form, determine the autoresize and resize params.
+ *
+ * @param object $gallery
+ * @return void
+ */
+function lightboxgallery_set_sizing($gallery) {
     if (isset($gallery->autoresizedisabled)) {
         $gallery->autoresize = 0;
         $gallery->resize = 0;
     }
-
-    return $DB->update_record('lightboxgallery', $gallery);
 }
 
 /**

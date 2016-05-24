@@ -72,10 +72,12 @@ class mod_lightboxgallery_mod_form extends moodleform_mod {
         );
         $mform->addElement('select', 'captionpos', get_string('captionpos', 'lightboxgallery'), $captionposopts);
 
-        $autoresizegroup = array();
-        $autoresizegroup[] = &$mform->createElement('select', 'autoresize', get_string('autoresize', 'lightboxgallery'),
+        $autoresize = $mform->createElement('select', 'autoresize', get_string('autoresize', 'lightboxgallery'),
                                 $this->get_autoresize_options());
-        $autoresizegroup[] = &$mform->createElement('checkbox', 'autoresizedisabled', null, get_string('disable'));
+        $autoresizegroup = array();
+        $autoresizegroup[] = $mform->createElement('select', 'autoresize', get_string('autoresize', 'lightboxgallery'),
+                                $this->get_autoresize_options());
+        $autoresizegroup[] = $mform->createElement('checkbox', 'autoresizedisabled', null, get_string('disable'));
         $mform->addGroup($autoresizegroup, 'autoresizegroup', get_string('autoresize', 'lightboxgallery'), ' ', false);
         $mform->setType('autoresize', PARAM_INTEGER);
         $mform->disabledIf('autoresizegroup', 'autoresizedisabled', 'checked');
@@ -116,7 +118,9 @@ class mod_lightboxgallery_mod_form extends moodleform_mod {
     }
 
     public function data_preprocessing(&$defaults) {
-        $defaults['autoresizedisabled'] = (isset($defaults['autoresize']) && $defaults['autoresize'] ? 0 : 1);
+        if (!isset($this->current->add)) {
+            $defaults['autoresizedisabled'] = isset($defaults['autoresize']) && $defaults['autoresize'] ? 0 : 1;
+        }
     }
 
     // Custom functions.
