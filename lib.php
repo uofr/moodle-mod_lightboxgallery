@@ -200,7 +200,7 @@ function lightboxgallery_get_recent_mod_activity(&$activities, &$index, $timesta
         foreach ($comments as $comment) {
             $display = lightboxgallery_resize_text(trim(strip_tags($comment->commenttext)), MAX_COMMENT_PREVIEW);
 
-            $activity = new object();
+            $activity = new stdClass();
 
             $activity->type         = 'lightboxgallery';
             $activity->cmid         = $cm->id;
@@ -208,7 +208,7 @@ function lightboxgallery_get_recent_mod_activity(&$activities, &$index, $timesta
             $activity->sectionnum   = $cm->sectionnum;
             $activity->timestamp    = $comment->timemodified;
 
-            $activity->content = new object();
+            $activity->content = new stdClass();
             $activity->content->id      = $comment->id;
             $activity->content->comment = $display;
 
