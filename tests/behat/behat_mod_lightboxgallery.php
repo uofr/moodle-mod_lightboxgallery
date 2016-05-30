@@ -59,7 +59,7 @@ class behat_mod_lightboxgallery extends behat_base {
         $cm = $DB->get_record_sql($sql, [$idnumber]);
 
         $href = new moodle_url('/mod/lightboxgallery/view.php', ['id' => $cm->id]);
-        $this->getSession()->visit($href);
+        $this->getSession()->visit($href->out());
     }
 
 }
