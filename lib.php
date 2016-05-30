@@ -353,7 +353,11 @@ function lightboxgallery_pluginfile($course, $cm, $context, $filearea, $args, $f
     global $CFG, $DB, $USER;
 
     require_once($CFG->libdir.'/filelib.php');
-    require_login($course, false, $cm);
+
+    $gallery = $DB->get_record('lightboxgallery', array('id' => $cm->instance));
+    if (!$gallery->ispublic) {
+        require_login($course, false, $cm);
+    }
 
     $relativepath = implode('/', $args);
     $fullpath = '/'.$context->id.'/mod_lightboxgallery/'.$filearea.'/'.$relativepath;
