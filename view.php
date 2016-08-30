@@ -52,8 +52,6 @@ if ($id) {
 }
 
 
-require_login($course, true, $cm);
-
 if ($gallery->ispublic) {
     $userid = (isloggedin() ? $USER->id : 0);
 } else {
@@ -145,10 +143,6 @@ foreach ($storedfiles as $storedfile) {
     $image = new lightboxgallery_image($storedfile, $gallery, $cm);
 
     echo $image->get_image_display_html($editing);
-
-    if (!is_float($imagecount / $gallery->perrow)) {
-        echo $OUTPUT->box('', 'clearfix');
-    }
 
     $imagecount++;
 }
