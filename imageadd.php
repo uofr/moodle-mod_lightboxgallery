@@ -31,7 +31,7 @@ $id = required_param('id', PARAM_INT);
 list($course, $cm) = get_course_and_cm_from_cmid($id, 'lightboxgallery');
 $gallery = $DB->get_record('lightboxgallery', array('id' => $cm->instance), '*', MUST_EXIST);
 
-require_login($course->id);
+require_login($course, true, $cm);
 
 $context = context_module::instance($cm->id);
 require_capability('mod/lightboxgallery:addimage', $context);
