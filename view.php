@@ -54,6 +54,8 @@ if ($id) {
 
 if ($gallery->ispublic) {
     $userid = (isloggedin() ? $USER->id : 0);
+    $PAGE->set_cm($cm, $course);
+    $PAGE->set_pagelayout('incourse');
 } else {
     require_login($course, true, $cm);
     $userid = $USER->id;
