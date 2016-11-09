@@ -40,7 +40,6 @@ $PAGE->set_cm($cm);
 $PAGE->set_url('/mod/lightboxgallery/view.php', array('id' => $cm->id));
 $PAGE->set_title($gallery->name);
 $PAGE->set_heading($course->shortname);
-$PAGE->set_button($OUTPUT->update_module_button($cm->id, 'lightboxgallery'));
 
 $mform = new mod_lightboxgallery_imageadd_form(null, array('id' => $cm->id));
 
