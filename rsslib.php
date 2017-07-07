@@ -244,7 +244,7 @@ function lightboxgallery_rss_header($title = null, $link = null, $description = 
         $result .= rss_full_tag('copyright', 2, false, '&#169; '. $today['year'] .' '. format_string($site->fullname));
 
         // Write image info.
-        $rsspix = $OUTPUT->pix_url('i/rsssitelogo');
+        $rsspix = $OUTPUT->image_url('i/rsssitelogo');
 
         // Write the info.
         $result .= rss_start_tag('image', 2, true);
