@@ -53,7 +53,7 @@ class lightboxgallery_image {
 
         $this->imageurl = $CFG->wwwroot.'/pluginfile.php/'.$this->context->id.'/mod_lightboxgallery/gallery_images/'.
                            $this->storedfile->get_itemid().$this->storedfile->get_filepath().$this->storedfile->get_filename();
-        $this->thumburl = $CFG->wwwroot.'/pluginfile.php/'.$this->context->id.'/mod_lightboxgallery/gallery_thumbs/0/'.
+        $this->thumburl = $CFG->wwwroot.'/pluginfile.php/'.$this->context->id.'/mod_lightboxgallery/gallery_thumbs/0'.
                            $this->storedfile->get_filepath().$this->storedfile->get_filename().'.png';
 
         $imageinfo = $this->storedfile->get_imageinfo();
