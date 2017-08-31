@@ -31,13 +31,12 @@ if ($delete && ! $comment = $DB->get_record('lightboxgallery_comments', array('g
     print_error('Invalid comment ID');
 }
 
-require_login($course->id);
+require_login($course, true, $cm);
 
 $PAGE->set_cm($cm);
 $PAGE->set_url('/mod/lightboxgallery/view.php', array('id' => $id));
 $PAGE->set_title($gallery->name);
 $PAGE->set_heading($course->shortname);
-$PAGE->set_button($OUTPUT->update_module_button($cm->id, 'lightboxgallery'));
 
 $context = context_module::instance($cm->id);
 
@@ -72,7 +71,7 @@ $mform = new mod_lightboxgallery_comment_form(null, $gallery);
 if ($mform->is_cancelled()) {
     redirect($galleryurl);
 } else if ($formadata = $mform->get_data()) {
-    $newcomment = new object;
+    $newcomment = new stdClass;
     $newcomment->gallery = $gallery->id;
     $newcomment->userid = $USER->id;
     $newcomment->commenttext = $formadata->comment['text'];

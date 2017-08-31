@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+defined('MOODLE_INTERNAL') || die();
 
 /**
  * Main image class with all image manipulations as methods
@@ -49,11 +50,6 @@ class lightboxgallery_image {
         $this->cm = &$cm;
         $this->cmid = $cm->id;
         $this->context = context_module::instance($cm->id);
-
-        /*if (!$this->storedfile->is_valid_image()) {
-          // Error? continue.
-          print_error('invalidimage');
-        }*/
 
         $this->imageurl = $CFG->wwwroot.'/pluginfile.php/'.$this->context->id.'/mod_lightboxgallery/gallery_images/'.
                            $this->storedfile->get_itemid().$this->storedfile->get_filepath().$this->storedfile->get_filename();
@@ -222,8 +218,6 @@ class lightboxgallery_image {
         $timemodified = strftime(get_string('strftimedatetimeshort', 'langconfig'), $this->storedfile->get_timemodified());
         $filesize = round($this->storedfile->get_filesize() / 100) / 10;
 
-        $width = round(100 / $this->gallery->perrow);
-
         // Hide the caption.
         if ($this->gallery->captionpos == LIGHTBOXGALLERY_POS_HID) {
             $caption = ''; // Hide by cleaning the content (looks better than cleaning the whole div).
@@ -231,7 +225,7 @@ class lightboxgallery_image {
         $posclass = ($this->gallery->captionpos == LIGHTBOXGALLERY_POS_TOP) ? 'top' : 'bottom';
         $captiondiv = html_writer::tag('div', $caption, array('class' => "lightbox-gallery-image-caption $posclass"));
 
-        $html = '<div class="lightbox-gallery-image-container" style="width: '.$width.'%;">'.
+        $html = '<div class="lightbox-gallery-image-container">'.
                     '<div class="lightbox-gallery-image-wrapper">'.
                         '<div class="lightbox-gallery-image-frame">';
         if ($this->gallery->captionpos == LIGHTBOXGALLERY_POS_TOP) {
