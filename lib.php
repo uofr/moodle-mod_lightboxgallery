@@ -78,6 +78,9 @@ function lightboxgallery_add_instance($gallery) {
 
     lightboxgallery_set_sizing($gallery);
 
+    $completiontimeexpected = !empty($gallery->completionexpected) ? $gallery->completionexpected : null;
+    \core_completion\api::update_completion_date_event($gallery->coursemodule, 'lightboxgallery', $gallery->id, $completiontimeexpected);
+
     return $DB->insert_record('lightboxgallery', $gallery);
 }
 
@@ -100,6 +103,9 @@ function lightboxgallery_update_instance($gallery) {
     }
 
     lightboxgallery_set_sizing($gallery);
+
+    $completiontimeexpected = !empty($gallery->completionexpected) ? $gallery->completionexpected : null;
+    \core_completion\api::update_completion_date_event($gallery->coursemodule, 'lightboxgallery', $gallery->id, $completiontimeexpected);
 
     return $DB->update_record('lightboxgallery', $gallery);
 }
@@ -481,3 +487,34 @@ function lightboxgallery_rss_enabled() {
 
     return ($CFG->enablerssfeeds && get_config('lightboxgallery', 'enablerssfeeds'));
 }
+
+/**
+ * This function receives a calendar event and returns the action associated with it, or null if there is none.
+ *
+ * This is used by block_myoverview in order to display the event appropriately. If null is returned then the event
+ * is not displayed on the block.
+ *
+ * @param calendar_event $event
+ * @param \core_calendar\action_factory $factory
+ * @return \core_calendar\local\event\entities\action_interface|null
+ */
+function mod_lightboxgallery_core_calendar_provide_event_action(calendar_event $event,
+                                                            \core_calendar\action_factory $factory) {
+    $cm = get_fast_modinfo($event->courseid)->instances['lightboxgallery'][$event->instance];
+
+    $completion = new \completion_info($cm->get_course());
+
+    $completiondata = $completion->get_data($cm, false);
+
+    if ($completiondata->completionstate != COMPLETION_INCOMPLETE) {
+        return null;
+    }
+
+    return $factory->create_instance(
+            get_string('view'),
+            new \moodle_url('/mod/lightboxgallery/view.php', ['id' => $cm->id]),
+            1,
+            true
+    );
+}
+
