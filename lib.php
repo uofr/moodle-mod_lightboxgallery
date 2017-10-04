@@ -79,7 +79,8 @@ function lightboxgallery_add_instance($gallery) {
     lightboxgallery_set_sizing($gallery);
 
     $completiontimeexpected = !empty($gallery->completionexpected) ? $gallery->completionexpected : null;
-    \core_completion\api::update_completion_date_event($gallery->coursemodule, 'lightboxgallery', $gallery->id, $completiontimeexpected);
+    \core_completion\api::update_completion_date_event($gallery->coursemodule, 'lightboxgallery', $gallery->id,
+        $completiontimeexpected);
 
     return $DB->insert_record('lightboxgallery', $gallery);
 }
@@ -105,7 +106,8 @@ function lightboxgallery_update_instance($gallery) {
     lightboxgallery_set_sizing($gallery);
 
     $completiontimeexpected = !empty($gallery->completionexpected) ? $gallery->completionexpected : null;
-    \core_completion\api::update_completion_date_event($gallery->coursemodule, 'lightboxgallery', $gallery->id, $completiontimeexpected);
+    \core_completion\api::update_completion_date_event($gallery->coursemodule, 'lightboxgallery', $gallery->id,
+        $completiontimeexpected);
 
     return $DB->update_record('lightboxgallery', $gallery);
 }

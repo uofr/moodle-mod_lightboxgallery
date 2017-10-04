@@ -16,6 +16,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once(dirname(__FILE__).'/locallib.php');
+require_once($CFG->libdir.'/formslib.php');
+require_once(dirname(__FILE__).'/imageclass.php');
+
 /**
  * Prints a particular instance of lightboxgallery
  *
@@ -24,11 +28,6 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright 2012 NetSpot Pty Ltd
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-require_once(dirname(__FILE__).'/locallib.php');
-require_once($CFG->libdir.'/formslib.php');
-require_once(dirname(__FILE__).'/imageclass.php');
-
 class mod_lightboxgallery_imageadd_form extends moodleform {
 
     public function definition() {

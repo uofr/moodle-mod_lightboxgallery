@@ -16,14 +16,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-/**
- * Main image class with all image manipulations as methods
- *
- * @package   mod_lightboxgallery
- * @copyright 2010 John Kelsh
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 require_once($CFG->libdir.'/gdlib.php');
 
 define('THUMBNAIL_WIDTH', 162);
@@ -32,6 +24,13 @@ define('LIGHTBOXGALLERY_POS_HID', 2);
 define('LIGHTBOXGALLERY_POS_TOP', 1);
 define('LIGHTBOXGALLERY_POS_BOT', 0);
 
+/**
+ * Main image class with all image manipulations as methods
+ *
+ * @package   mod_lightboxgallery
+ * @copyright 2010 John Kelsh
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class lightboxgallery_image {
 
     private $cm;
