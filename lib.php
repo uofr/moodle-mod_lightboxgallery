@@ -140,6 +140,10 @@ function lightboxgallery_delete_instance($id) {
 
     $cm = get_coursemodule_from_instance('lightboxgallery', $gallery->id);
     $context = context_module::instance($cm->id);
+
+    // Cleanup our completion event.
+    \core_completion\api::update_completion_date_event($cm->id, 'lightboxgallery', $id, null);
+
     // Files.
     $fs = get_file_storage();
     $fs->delete_area_files($context->id, 'mod_lightboxgallery');
