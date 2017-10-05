@@ -30,4 +30,4 @@ $plugin->cron     = 0;           // Period for cron to check this plugin (secs).
 
 $plugin->component = 'mod_lightboxgallery';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '3.3.0.0';
+$plugin->release = '3.3.0.1';

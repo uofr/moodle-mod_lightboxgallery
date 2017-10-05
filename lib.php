@@ -78,11 +78,13 @@ function lightboxgallery_add_instance($gallery) {
 
     lightboxgallery_set_sizing($gallery);
 
+    $gallery->id = $DB->insert_record('lightboxgallery', $gallery);
+
     $completiontimeexpected = !empty($gallery->completionexpected) ? $gallery->completionexpected : null;
     \core_completion\api::update_completion_date_event($gallery->coursemodule, 'lightboxgallery', $gallery->id,
         $completiontimeexpected);
 
-    return $DB->insert_record('lightboxgallery', $gallery);
+    return $gallery->id;
 }
 
 /**
