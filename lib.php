@@ -168,7 +168,7 @@ function lightboxgallery_delete_instance($id) {
  * @todo Finish documenting this function
  */
 function lightboxgallery_user_complete($course, $user, $mod, $resource) {
-    global $DB, $CFG;
+    global $DB;
 
     $sql = "SELECT c.*
               FROM {lightboxgallery_comments} c
@@ -198,7 +198,7 @@ function lightboxgallery_get_extra_capabilities() {
 }
 
 function lightboxgallery_get_recent_mod_activity(&$activities, &$index, $timestart, $courseid, $cmid, $userid=0, $groupid=0) {
-    global $DB, $CFG, $COURSE;
+    global $DB, $COURSE;
 
     if ($COURSE->id == $courseid) {
         $course = $COURSE;
@@ -366,7 +366,7 @@ function lightboxgallery_get_post_actions() {
  * @return bool false if file not found, does not return if found - just send the file
  */
 function lightboxgallery_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {
-    global $CFG, $DB, $USER;
+    global $CFG, $DB;
 
     require_once($CFG->libdir.'/filelib.php');
 

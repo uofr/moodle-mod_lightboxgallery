@@ -78,8 +78,6 @@ class lightboxgallery_image {
     }
 
     public function create_thumbnail($offsetx = 0, $offsety = 0) {
-        global $CFG;
-
         $fileinfo = array(
             'contextid' => $this->context->id,
             'component' => 'mod_lightboxgallery',
