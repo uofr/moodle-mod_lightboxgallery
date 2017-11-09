@@ -41,7 +41,7 @@ class mod_lightboxgallery_imageadd_form extends moodleform {
         $mform->addElement('header', 'general', get_string('addimage', 'lightboxgallery'));
 
         $mform->addElement('filemanager', 'image', get_string('file'), '0',
-                           array('maxbytes' => $COURSE->maxbytes, 'accepted_types' => array('web_image', 'archive')));
+                           array('maxbytes' => $COURSE->maxbytes, 'accepted_types' => array('web_image', 'application/zip')));
         $mform->addRule('image', get_string('required'), 'required', null, 'client');
         $mform->addHelpButton('image', 'addimage', 'lightboxgallery');
 
