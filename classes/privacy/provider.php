@@ -114,7 +114,7 @@ class provider implements
         $sql = "SELECT cm.id AS cmid,
                        lbgc.commenttext,
                        lbgc.timemodified
-                FROM {context} c            
+                FROM {context} c
                 JOIN {course_modules} cm ON cm.id = c.instanceid AND c.contextlevel = :contextlevel
                 JOIN {modules} m ON m.id = cm.module
                 JOIN {lightboxgallery} lbg ON lbg.id = cm.instance
