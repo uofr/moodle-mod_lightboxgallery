@@ -137,12 +137,12 @@ class provider implements
                     $context = \context_module::instance($lastcmid);
                     self::export_lightboxgallery_data_for_user($commentdata, $context, $user);
                 }
-                $commentdata = [
-                    'commenttext' => [],
-                    'timemodified' => \core_privacy\local\request\transform::datetime($comment->timemodified),
-                ];
+                $commentdata = [];
             }
-            $commentdata['commenttext'][] = $comment->commenttext;
+            $commentdata['comments'][] = [
+                'commenttext' => $comment->commenttext,
+                'timemodified' => \core_privacy\local\request\transform::datetime($comment->timemodified),
+            ];
             $lastcmid = $comment->cmid;
         }
         $lbgcomments->close();
@@ -207,9 +207,8 @@ class provider implements
 
         $userid = $contextlist->get_user()->id;
         foreach ($contextlist->get_contexts() as $context) {
-
             if (!$context instanceof \context_module) {
-                return;
+                continue;
             }
             $instanceid = $DB->get_field('course_modules', 'instance', ['id' => $context->instanceid], MUST_EXIST);
             $DB->delete_records('lightboxgallery_comments', ['gallery' => $instanceid, 'userid' => $userid]);
