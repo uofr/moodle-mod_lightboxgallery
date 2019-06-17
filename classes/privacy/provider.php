@@ -249,7 +249,7 @@ class provider implements
         $DB->delete_records_select('lightboxgallery_comments', $sql, $params);
     }
 
-    protected static function get_lightboxgallery_id_from_context(context_module $context) {
+    protected static function get_lightboxgallery_id_from_context(\context_module $context) {
         $cm = get_coursemodule_from_id('lightboxgallery', $context->instanceid);
         return $cm ? (int) $cm->instance : 0;
     }
