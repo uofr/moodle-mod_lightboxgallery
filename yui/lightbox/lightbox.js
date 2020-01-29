@@ -617,10 +617,7 @@ YUI.add('moodle-mod_lightboxgallery-lightbox', function(Y) {
 				this.get("caption").setContent(caption).show();
 			}
 
-			// If image is part of a set display "Image x of x"
-			if (imageArray.length > 1) {
-				this.get("numberDisplay").setContent(this.get("strings.labelImage") + " " + (activeImage + 1) + " " + this.get("strings.labelOf") + "  " + imageArray.length).show();
-			}
+			this.get("numberDisplay").setContent(this.get("strings.labelImage") + " " + (activeImage + 1) + " " + this.get("strings.labelOf") + "  " + imageArray.length).show();
 
 			var imageDataContainer = this.get("imageDataContainer");
 
