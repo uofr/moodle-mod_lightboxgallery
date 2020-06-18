@@ -299,6 +299,7 @@ class lightboxgallery_image {
     }
 
     private function get_image_resized($height = THUMBNAIL_HEIGHT, $width = THUMBNAIL_WIDTH, $offsetx = 0, $offsety = 0) {
+        raise_memory_limit(MEMORY_EXTRA);
         $image = imagecreatefromstring($this->storedfile->get_content());
         $resized = imagecreatetruecolor($width, $height);
         imagealphablending($resized, false);
