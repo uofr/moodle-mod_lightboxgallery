@@ -179,10 +179,10 @@ YUI.add('moodle-mod_lightboxgallery-lightbox', function(Y) {
          *
          * @attribute resizeDuration
          * @type Number
-         * @default 0.5
+         * @default 0.05
          */
 		resizeDuration: {
-			value: 0.5,
+			value: 0.05,
 			validator: L.isNumber
 		},
 
@@ -578,15 +578,15 @@ YUI.add('moodle-mod_lightboxgallery-lightbox', function(Y) {
 			var lightBoxImage = this.get("lightboxImage");
 
 			if (this.get(ANIM)) {
-
+			    this._updateDetails();
 				var startOpacity = lightBoxImage.getStyle("display") === "none" ? 0 : lightBoxImage.getStyle("opacity") || 0,
 					anim = new Y.Anim({
 						node: lightBoxImage,
 						from: { opacity: startOpacity },
-						to: { opacity: 1 }
+						to: { opacity: 1 },
+						duration: 0.1
 					});
 
-				anim.on("end", this._updateDetails, this);
                 lightBoxImage.setStyle("width", imgWidth+'px');
                 lightBoxImage.setStyle("height", imgHeight+'px');
 				lightBoxImage.setStyle("opacity", startOpacity).show();
