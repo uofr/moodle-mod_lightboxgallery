@@ -1,10 +1,8 @@
 language: php
 
-sudo: true
-
 addons:
   firefox: "47.0.1"
-  postgresql: "9.4"
+  postgresql: "9.5"
   apt:
     packages:
       - openjdk-8-jre-headless
@@ -15,7 +13,7 @@ cache:
     - $HOME/.npm
 
 php:
- - 7.1
+ - 7.2
 
 env:
  global:
@@ -27,8 +25,8 @@ env:
 
 before_install:
   - phpenv config-rm xdebug.ini
-  - nvm install 8.9
-  - nvm use 8.9
+  - nvm install 14.0.0
+  - nvm use 14.0.0
   - cd ../..
   - composer create-project -n --no-dev --prefer-dist moodlerooms/moodle-plugin-ci ci ^2
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
