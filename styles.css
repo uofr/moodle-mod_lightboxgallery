@@ -57,6 +57,7 @@
     width: 95%;
     border: 1px solid #ccc;
     border-radius: 5px;
+    background-size: 100% 100%;
 }
 
 .lightbox-gallery .lightbox-gallery-image-caption,
