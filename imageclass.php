@@ -79,7 +79,6 @@ class lightboxgallery_image {
             0,
             $this->storedfile->get_filepath(),
             $this->storedfile->get_filename().'.png');
-        $this->thumburl->param('mtime', $this->storedfile->get_timemodified());
 
         if ($this->storedfile->get_mimetype() == 'image/svg+xml') {
             $this->thumburl = $this->imageurl;
@@ -96,6 +95,9 @@ class lightboxgallery_image {
         // If we weren't given a thumbnail, double check if it exists before generating one.
         if (!$thumbnail && (!$this->thumbnail = $this->get_thumbnail())) {
             $this->thumbnail = $this->create_thumbnail();
+        }
+        if ($this->thumbnail) {
+            $this->thumburl->param('mtime', $this->thumbnail->get_timemodified());
         }
 
         $this->metadata = $metadata;
@@ -204,18 +206,22 @@ class lightboxgallery_image {
             'filename'      => $this->storedfile->get_filename());
 
         ob_start();
+        $original = $this->storedfile->get_filename();
         $fileinfo['filename'] = $this->output_by_mimetype($this->get_image_flipped($direction));
         $flipped = ob_get_clean();
         $this->delete_file(false);
         $fs = get_file_storage();
         $this->set_stored_file($fs->create_file_from_string($fileinfo, $flipped));
         $this->create_thumbnail();
+        $this->update_meta_file($original, $fileinfo['filename']);
         return $fileinfo['filename'];
     }
 
-    private function get_editing_options() {
-        global $CFG;
-
+    /**
+     * Get the list of editing options allowed for this image.
+     * Not all editing types are supported for all image formats.
+     */
+    public function get_editing_options() {
         $options = [
             'caption',
             'delete',
@@ -234,11 +240,20 @@ class lightboxgallery_image {
             ];
         }
 
+        return $options;
+    }
+
+    private function get_editing_options_form() {
+        global $CFG;
+
+        $options = $this->get_editing_options();
+
         $html = '<form action="'.$CFG->wwwroot.'/mod/lightboxgallery/imageedit.php" method="post"/>'.
                     '<input type="hidden" name="id" value="'.$this->cmid.'" />'.
                     '<input type="hidden" name="image" value="'.$this->storedfile->get_filename().'" />'.
                     '<input type="hidden" name="page" value="0" />'.
-                    '<select name="tab" class="lightbox-edit-select" onchange="submit();">'.
+                    '<select name="tab" class="lightbox-edit-select custom-select mb-1" style="width: '.THUMBNAIL_WIDTH.'px;" '.
+                    'onchange="submit();">'.
                         '<option disabled selected>'.get_string('edit_choose', 'lightboxgallery').'</option>';
         foreach ($options as $option) {
             $html .= '<option value="'.$option.'">'.get_string('edit_'.$option, 'lightboxgallery').'</option>';
@@ -300,7 +315,7 @@ class lightboxgallery_image {
         }
         $html .= $this->gallery->extinfo ? '<div class="lightbox-gallery-image-extinfo">'.$timemodified.
                  '<br/>'.$filesize.'KB '.$this->width.'x'.$this->height.'px</div>' : '';
-        $html .= ($editing ? $this->get_editing_options() : '');
+        $html .= ($editing ? $this->get_editing_options_form() : '');
         $html .= '</div>'.
                     '</div>'.
                 '</div>';
@@ -357,7 +372,7 @@ class lightboxgallery_image {
             $srcy = floor($cy - ($srch / 2)) + $offsety;
         }
 
-        imagecopybicubic($resized, $image, 0, 0, $srcx, $srcy, $width, $height, $srcw, $srch);
+        imagecopyresampled($resized, $image, 0, 0, $srcx, $srcy, $width, $height, $srcw, $srch);
 
         return $resized;
 
@@ -435,6 +450,7 @@ class lightboxgallery_image {
             'filename'      => $this->storedfile->get_filename());
 
         ob_start();
+        $original = $fileinfo['filename'];
         $fileinfo['filename'] = $this->output_by_mimetype($this->get_image_resized($height, $width));
         $resized = ob_get_clean();
 
@@ -446,6 +462,7 @@ class lightboxgallery_image {
         $this->width = $imageinfo['width'];
 
         $this->thumbnail = $this->create_thumbnail();
+        $this->update_meta_file($original, $fileinfo['filename']);
 
         return $fileinfo['filename'];
     }
@@ -460,6 +477,7 @@ class lightboxgallery_image {
             'filename'      => $this->storedfile->get_filename());
 
         ob_start();
+        $original = $fileinfo['filename'];
         $fileinfo['filename'] = $this->output_by_mimetype($this->get_image_rotated($angle));
         $rotated = ob_get_clean();
 
@@ -468,6 +486,7 @@ class lightboxgallery_image {
         $this->set_stored_file($fs->create_file_from_string($fileinfo, $rotated));
 
         $this->create_thumbnail();
+        $this->update_meta_file($original, $fileinfo['filename']);
         return $fileinfo['filename'];
     }
 
@@ -487,6 +506,18 @@ class lightboxgallery_image {
         } else {
             return $DB->insert_record('lightboxgallery_image_meta', $imagemeta);
         }
+    }
+
+    public function update_meta_file($old, $new) {
+        global $DB;
+
+        if ($old == $new) {
+            return;
+        }
+
+        $sql = 'UPDATE {lightboxgallery_image_meta} SET image = ?
+                WHERE image = ? AND gallery = ?';
+        $DB->execute($sql, [$new, $old, $this->gallery->id]);
     }
 
     public function copy_content_to_temp() {

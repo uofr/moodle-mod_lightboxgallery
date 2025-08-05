@@ -113,7 +113,7 @@ function lightboxgallery_config_defaults() {
     }
 }
 
-function lightboxgallery_edit_types($showall = false) {
+function lightboxgallery_edit_types($showall = false, $image = null) {
     $result = array();
 
     $disabledplugins = explode(',', get_config('lightboxgallery', 'disabledplugins'));
@@ -122,6 +122,9 @@ function lightboxgallery_edit_types($showall = false) {
     $disabledplugins[] = 'crop';
 
     $edittypes = get_list_of_plugins('mod/lightboxgallery/edit');
+    if ($image !== null && !$showall) {
+        $edittypes = array_intersect($image->get_editing_options(), $edittypes);
+    }
 
     foreach ($edittypes as $edittype) {
         if ($showall || !in_array($edittype, $disabledplugins)) {
@@ -142,7 +145,7 @@ function lightboxgallery_print_tags($heading, $tags, $courseid, $galleryid) {
          '  <input type="hidden" name="id" value="'.$courseid.'" />'.
          '  <input type="hidden" name="gallery" value="'.$galleryid.'" />'.
          '  <input type="text" name="search" size="8" />'.
-         '  <input type="submit" value="'.get_string('search').'" />'.
+         '  <input type="submit" class="btn btn-secondary" value="'.get_string('search').'" />'.
          ' </fieldset>'.
          '</form>'.
          $heading.': ';
