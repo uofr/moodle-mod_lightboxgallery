@@ -519,8 +519,8 @@ function lightboxgallery_print_comment($comment, $context) {
     // TODO: user_group picture?
          '<div class="left"><div class="grouppictures">&nbsp;</div></div><div class="no-overflow"><div class="content"><div class="posting fullpost">'.
          format_text($comment->commenttext, FORMAT_MOODLE).
-         '</div></div></div></div><div class="row side"><div class="left">&nbsp;</div><div class="options clearfix"><div class="commands">'.
-         (has_capability('mod/lightboxgallery:edit', $context) ? html_writer::link($deleteurl, get_string('delete')) : '').
+         '<div class="commands">'.
+         (has_capability('mod/lightboxgallery:edit', $context) ? html_writer::link($deleteurl, get_string('delete'), ['class' => 'btn btn-link']) : '').
          '</div>'.
          '</div></div></div>';
          
