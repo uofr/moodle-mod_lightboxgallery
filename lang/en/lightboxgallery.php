@@ -24,7 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['acceptablefiletypebriefing'] = 'If you wish to upload multiple files at a time, you can submit a zip file with images inside it and all valid images inside the zip archive will be added to the gallery.';
+$string['acceptablefiletypebriefing'] = 'To upload multiple images, submit a <b>.zip</b> archive containing the files. All images found within the zip will be added to the gallery.';
 $string['addcomment'] = 'Add comment';
 $string['addimage'] = 'Add images';
 $string['addimage_help'] = 'Browse for an image on your local machine to add to the current gallery.
@@ -106,14 +106,15 @@ $string['makepublic'] = 'Make public';
 $string['makepublic_help'] = 'When public, the gallery can be viewed by all users (including guests) not enrolled in the course.';
 $string['metadata'] = 'Meta data';
 $string['modulename'] = 'Lightbox Gallery';
-$string['modulename_help'] = 'The Lightbox Gallery resource module enables participants to view a gallery of images.
+$string['modulename_help'] = 'The Lightbox Gallery enables you to upload images to be displayed in a gallery style.
 
-This resource allows you to create \'Lightbox\' enabled image galleries within your Moodle course.
+As an instructor, you are able to create a gallery instance and add images individually or by uploading multiple images within a zip file. Thumbnail images will be generated for every vaild image file found.
 
-As a course teacher, you are able to create, edit and delete galleries. Small thumbnails will then be generated, which are used for the thumbnail view of the gallery.
-Clicking on any of the thumbnails brings that image into focus, and allows you to scroll through the gallery at your leisure. Using the Lightbox scripts creates nice transition effects when loading and scrolling through the images.
+The thumbnails are then displayed across a number of rows and columns, (depending on configuration). Clicking on a thumbnail opens the larger version within an overlay, and allows one to navigate through the gallery with the on-screen menu options or via keyboard navigation (Arrow keys, N for Next, P for Previous, C or ESC to Close).
 
-If enabled, users are able to leave comments on your gallery.';
+If enabled, course members are able to leave comments within the gallery. 
+
+With advanced configuration through role overrides, it\'s also possible to have students or other course members contribute to the gallery as well.';
 $string['modulenameadd'] = 'Lightbox gallery';
 $string['modulenameplural'] = 'Lightbox Galleries';
 $string['modulenameshort'] = 'Gallery';

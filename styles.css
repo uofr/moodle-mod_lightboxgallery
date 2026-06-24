@@ -1,8 +1,21 @@
-.lightbox-gallery .lightbox-gallery-image-container {
-    display: inline-block;
-    margin: 10px;
-
+.lightbox-gallery {
+    margin-bottom: 1em;
+    width: 200px;
 }
+
+.lightbox-gallery.autowidth {
+    width: auto;
+}
+
+#page-mod-lightboxgallery-view .lightbox-gallery {
+    width: auto;
+}
+
+.lightbox-gallery .lightbox-gallery-image-container,
+.lightbox-gallery .lbg-image-container {
+	float:		left;
+}
+
 .dir-rtl .lightbox-gallery .lightbox-gallery-image-container {
     display: inline-block;
     margin: 10px;
@@ -54,12 +67,17 @@
     text-decoration: none;
 }
 
-.lightbox-gallery .lightbox-gallery-image-caption {
-    font-weight: bold;
+.lightbox-gallery .lightbox-gallery-image-caption,
+.lightbox-gallery .lbg-image-caption {
+    /* font-weight: bold; */
     word-wrap: break-word;
 }
 
-.lightbox-gallery .lightbox-gallery-image-caption.top {
+.lightbox-gallery .lightbox-gallery-image-frame .lightbox-gallery-image-caption {
+    font-weight: bold;
+}
+
+.lightbox-gallery .lightbox-gallery-image-frame .lightbox-gallery-image-caption.top {
     margin-bottom: -3px;
 }
 
@@ -146,12 +164,10 @@
 #page-mod-lightboxgallery-view #imageData #bottomNavDownload,
 #page-mod-lightboxgallery-search #imageData #bottomNavDownload {
     background: url([[pix:lightboxgallery|download]]) no-repeat;
-    float: right;
-    height: 22px;
-    margin-right: .5em;
     padding-bottom: 0.7em;
     padding-right: 0.5em;
-    width: 104px;
+    margin-right: .5em;
+    outline: none;
 }
 
 #page-mod-lightboxgallery-view #imageData #imageDetails {
