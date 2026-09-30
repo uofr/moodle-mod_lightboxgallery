@@ -30,6 +30,8 @@ global $CFG;
 
 use core_privacy\tests\provider_testcase;
 use core_privacy\local\request\approved_contextlist;
+use core_privacy\local\request\approved_userlist;
+use core_privacy\local\request\userlist;
 use core_privacy\local\request\transform;
 use core_privacy\local\request\writer;
 use mod_lightboxgallery\privacy\provider;
@@ -275,6 +277,69 @@ final class privacy_test extends provider_testcase {
             unset($commentlist[$comment['commenttext']]);
         }
         $this->assertEmpty($commentlist);
+    }
+
+    /**
+     * Test get_users_in_context.
+     *
+     * @return void
+     */
+    public function test_get_users_in_context(): void {
+        $dg = $this->getDataGenerator();
+        $course = $dg->create_course();
+        $gallerya = $dg->create_module('lightboxgallery', ['course' => $course]);
+        $galleryb = $dg->create_module('lightboxgallery', ['course' => $course]);
+        $u1 = $dg->create_user();
+        $u2 = $dg->create_user();
+        $u3 = $dg->create_user();
+
+        $this->create_comment($gallerya->id, $u1->id, 'a_u1');
+        $this->create_comment($gallerya->id, $u2->id, 'a_u2');
+        $this->create_comment($galleryb->id, $u3->id, 'b_u3');
+
+        $userlist = new userlist(\context_module::instance($gallerya->cmid), 'mod_lightboxgallery');
+        provider::get_users_in_context($userlist);
+        $userids = $userlist->get_userids();
+        sort($userids);
+        $this->assertEquals([$u1->id, $u2->id], $userids);
+
+        // Nothing is reported outside module contexts.
+        $userlist = new userlist(\context_course::instance($course->id), 'mod_lightboxgallery');
+        provider::get_users_in_context($userlist);
+        $this->assertEmpty($userlist->get_userids());
+    }
+
+    /**
+     * Test delete_data_for_users.
+     *
+     * @return void
+     */
+    public function test_delete_data_for_users(): void {
+        global $DB;
+        $dg = $this->getDataGenerator();
+        $course = $dg->create_course();
+        $gallerya = $dg->create_module('lightboxgallery', ['course' => $course]);
+        $galleryb = $dg->create_module('lightboxgallery', ['course' => $course]);
+        $u1 = $dg->create_user();
+        $u2 = $dg->create_user();
+
+        $this->create_comment($gallerya->id, $u1->id, 'a_u1');
+        $this->create_comment($gallerya->id, $u2->id, 'a_u2');
+        $this->create_comment($galleryb->id, $u1->id, 'b_u1');
+
+        $contexta = \context_module::instance($gallerya->cmid);
+        provider::delete_data_for_users(new approved_userlist($contexta, 'mod_lightboxgallery', [$u1->id]));
+
+        // Only the listed user's comments in that gallery are removed.
+        $this->assertFalse($DB->record_exists('lightboxgallery_comments', ['gallery' => $gallerya->id, 'userid' => $u1->id]));
+        $this->assertTrue($DB->record_exists('lightboxgallery_comments', ['gallery' => $gallerya->id, 'userid' => $u2->id]));
+        $this->assertTrue($DB->record_exists('lightboxgallery_comments', ['gallery' => $galleryb->id, 'userid' => $u1->id]));
+
+        // An empty list, or a context that isn't a gallery's, removes nothing and doesn't fail.
+        provider::delete_data_for_users(new approved_userlist($contexta, 'mod_lightboxgallery', []));
+        provider::delete_data_for_users(new approved_userlist(\context_course::instance($course->id), 'mod_lightboxgallery',
+            [$u2->id]));
+        $this->assertEquals(2, $DB->count_records('lightboxgallery_comments'));
     }
 
     /**
