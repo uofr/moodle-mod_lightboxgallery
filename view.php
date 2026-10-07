@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
 /**
  * Prints a particular instance of lightboxgallery
  *
@@ -23,13 +22,13 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
-require_once(dirname(__FILE__).'/locallib.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
+require_once(dirname(__FILE__) . '/locallib.php');
 
-require_once($CFG->libdir.'/completionlib.php');
-require_once($CFG->libdir.'/filelib.php');
-require_once($CFG->libdir.'/rsslib.php');
-require_once(dirname(__FILE__).'/imageclass.php');
+require_once($CFG->libdir . '/completionlib.php');
+require_once($CFG->libdir . '/filelib.php');
+require_once($CFG->libdir . '/rsslib.php');
+require_once(dirname(__FILE__) . '/imageclass.php');
 
 global $DB;
 
@@ -39,19 +38,19 @@ $page = optional_param('page', 0, PARAM_INT);
 $search  = optional_param('search', '', PARAM_TEXT);
 
 if ($id) {
-    list($course, $cm) = get_course_and_cm_from_cmid($id, 'lightboxgallery');
-    if (!$gallery = $DB->get_record('lightboxgallery', array('id' => $cm->instance))) {
+    [$course, $cm] = get_course_and_cm_from_cmid($id, 'lightboxgallery');
+    if (!$gallery = $DB->get_record('lightboxgallery', ['id' => $cm->instance])) {
         throw new \moodle_exception('invalidcoursemodule');
     }
 } else {
-    if (!$gallery = $DB->get_record('lightboxgallery', array('id' => $l))) {
+    if (!$gallery = $DB->get_record('lightboxgallery', ['id' => $l])) {
         throw new \moodle_exception('invalidlightboxgalleryid', 'lightboxgallery');
     }
-    list($course, $cm) = get_course_and_cm_from_instance($gallery, 'lightboxgallery');
+    [$course, $cm] = get_course_and_cm_from_instance($gallery, 'lightboxgallery');
 }
 
 
-if ($gallery->ispublic) {
+if ($gallery->ispublic && lightboxgallery_public_gallery_visible($course, $cm)) {
     $userid = (isloggedin() ? $USER->id : 0);
     $PAGE->set_cm($cm, $course);
     $PAGE->set_pagelayout('incourse');
@@ -61,21 +60,20 @@ if ($gallery->ispublic) {
 }
 
 $context = context_module::instance($cm->id);
-$editing = $PAGE->user_is_editing();
-if ($editing) {
-    require_capability('mod/lightboxgallery:edit', $context);
-}
+// Anyone who can edit the gallery gets the edit mode switch here, even if they can't edit the course.
+$PAGE->set_other_editing_capability('mod/lightboxgallery:edit');
+$editing = $PAGE->user_is_editing() && has_capability('mod/lightboxgallery:edit', $context);
 
-if (empty($cm->visible) and !has_capability('moodle/course:viewhiddenactivities', $context)) {
+if (empty($cm->visible) && !has_capability('moodle/course:viewhiddenactivities', $context)) {
     notice(get_string("activityiscurrentlyhidden"));
 }
 
 lightboxgallery_config_defaults();
 
-$params = array(
+$params = [
     'context' => $context,
-    'objectid' => $gallery->id
-);
+    'objectid' => $gallery->id,
+];
 $event = \mod_lightboxgallery\event\course_module_viewed::create($params);
 $event->add_record_snapshot('course_modules', $cm);
 $event->add_record_snapshot('course', $course);
@@ -87,7 +85,7 @@ $completion = new completion_info($course);
 $completion->set_module_viewed($cm);
 
 $PAGE->set_cm($cm);
-$PAGE->set_url('/mod/lightboxgallery/view.php', array('id' => $cm->id));
+$PAGE->set_url('/mod/lightboxgallery/view.php', ['id' => $cm->id]);
 $PAGE->set_title($gallery->name);
 $PAGE->set_heading($course->fullname);
 $PAGE->requires->css('/mod/lightboxgallery/assets/skins/sam/gallery-lightbox-skin.css');
@@ -99,7 +97,7 @@ $heading = get_string('displayinggallery', 'lightboxgallery', $gallery->name);
 if ($allowrssfeed) {
     rss_add_http_header($context, 'mod_lightboxgallery', $gallery->id, $gallery->name);
     $strrsssub = get_string('rsssubscribe', 'lightboxgallery');
-    $heading .= ' '.rss_get_link($context->id, $userid, 'mod_lightboxgallery', $gallery->id, $strrsssub);
+    $heading .= ' ' . rss_get_link($context->id, $userid, 'mod_lightboxgallery', $gallery->id, $strrsssub);
 }
 
 echo $OUTPUT->header();
@@ -109,7 +107,7 @@ if ($gallery->autoresize == AUTO_RESIZE_SCREEN || $gallery->autoresize == AUTO_R
 } else {
     $resizecss = '';
 }
-echo $OUTPUT->box_start('generalbox lightbox-gallery clearfix'.$resizecss);
+echo $OUTPUT->box_start('generalbox lightbox-gallery clearfix' . $resizecss);
 
 $fs = get_file_storage();
 $storedfiles = $fs->get_area_files($context->id, 'mod_lightboxgallery', 'gallery_images');
@@ -142,15 +140,15 @@ if (!$editing && $showtags) {
           GROUP BY $desccompare
           ORDER BY COUNT($desccompare) DESC,
                    $desccompare ASC";
-    if ($tags = $DB->get_records_sql($sql, array(), 0, 10)) {
+    if ($tags = $DB->get_records_sql($sql, [], 0, 10)) {
         lightboxgallery_print_tags(get_string('tagspopular', 'lightboxgallery'), $tags, $course->id, $gallery->id);
     }
 }
 
-$options = array();
+$options = [];
 
 if (has_capability('mod/lightboxgallery:addimage', $context)) {
-    $opturl = new moodle_url('/mod/lightboxgallery/imageadd.php', array('id' => $cm->id));
+    $opturl = new moodle_url('/mod/lightboxgallery/imageadd.php', ['id' => $cm->id]);
     $options[] = html_writer::link($opturl, get_string('addimage', 'lightboxgallery'), ['class' => 'btn btn-primary']);
 }
 
@@ -163,9 +161,8 @@ if (count($options) > 0) {
     echo $OUTPUT->box(implode(' ', $options), 'center');
 }
 
-if (!$editing && $gallery->comments && has_capability('mod/lightboxgallery:viewcomments', $context)) {
-    if ($comments = $DB->get_records('lightboxgallery_comments', array('gallery' => $gallery->id), 'timemodified ASC')) {
-        $first_comment = 1;
+if (!$editing && lightboxgallery_can_view_comments($gallery, $course, $context)) {
+    if ($comments = $DB->get_records('lightboxgallery_comments', ['gallery' => $gallery->id], 'timemodified ASC')) {
         foreach ($comments as $comment) {
             lightboxgallery_print_comment($comment, $context, $first_comment);
             $first_comment = 0;
